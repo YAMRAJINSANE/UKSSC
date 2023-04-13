@@ -1,7 +1,8 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, StatusBar } from 'react-native'
 import React, { useEffect,useState } from 'react'
 import client from './QuestionItem';
 import { FlatList } from 'react-native';
+import { COLORS, SIZES } from "./Constant";
 
 
 const FrontTitle = ({navigation,route}) => {
@@ -34,7 +35,12 @@ const FrontTitle = ({navigation,route}) => {
     console.log(FilData,"FIfsja")
 
   return (
-    <View className="flex-1 mx-3">
+    <View className="bg-[#1F1047] relative  flex-1">
+      			<StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
+
+            <View className="mt-3 h-[80px]  mx-3  bg-[#38E9BB] rounded-md flex justify-center items-center">
+				<Text className="text-3xl  font-semibold ">{data}</Text>
+			</View>
             <FlatList
             data={FilData}
             renderItem={(g)=>{
@@ -43,13 +49,13 @@ const FrontTitle = ({navigation,route}) => {
                     <TouchableOpacity
                     onPress={()=>navigation.navigate("Front",{data:g.item.title})}
                     
-                    >
+                    > 
 
                     
-                    <View className="mt-3 w-full h-[150px]  bg-yellow-600 rounded-md flex justify-center items-center">
+<View className="mt-3 h-[110px] mx-3  bg-[#6849FA] rounded-md flex justify-center items-center">
                    
                    
-                    <Text className="text-3xl font-semibold ">
+                    <Text className="text-xl text-white font-semibold ">
                     {g.item.title}
                         </Text>
                          </View>
