@@ -97,7 +97,7 @@ function MyStack() {
           size={30}
           color="#471598"
           
-          style={{ marginLeft: 10,padding:2,backgroundColor:"white",borderRadius:6 }}
+          style={{ marginLeft: 10,padding:2,color:"white"}}
           onPress={() => {
             // handle left menu icon press
           }}
@@ -119,10 +119,91 @@ function MyStack() {
       name="HomeStack" component={NewHome} />
     
       <Stack.Screen
+      options={{
+        title: 'SSC Quizler',
+        headerStyle: {
+          backgroundColor: '#471598',
+          elevation: 5, 
+          shadowOpacity:0.5
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+         
+          fontWeight: 'bold',
+  
+        },
+        headerTitleAlign: 'center',
+    
+     
+        
+      }}
+      
       
       name="Front" component={Home} />
-      <Stack.Screen name="FrontTitle" component={FrontTitle} />
-      <Stack.Screen name="AllClasses" component={AllClasses} />
+      <Stack.Screen name="FrontTitle"
+      
+      
+      
+      options={{
+        title: 'SSC Quizler',
+        headerStyle: {
+          backgroundColor: '#471598',
+          elevation: 5, 
+          shadowOpacity:0.5
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+         
+          fontWeight: 'bold',
+  
+        },
+        headerTitleAlign: 'center',
+    
+     
+        
+      }}
+      
+      
+      
+      
+      
+      component={FrontTitle} />
+      <Stack.Screen name="AllClasses"
+      
+      
+      
+      
+      
+      
+      options={{
+        title: 'SSC Quizler',
+        headerStyle: {
+          backgroundColor: '#471598',
+          elevation: 5, 
+          shadowOpacity:0.5
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+         
+          fontWeight: 'bold',
+  
+        },
+        headerTitleAlign: 'center',
+    
+     
+        
+      }}
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      component={AllClasses} />
     </Stack.Navigator>
   );
 }

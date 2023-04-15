@@ -37,6 +37,7 @@ const Home = ({route}) => {
 
   const [isOptionsDisabled, setIsOptionsDisabled] = useState(false);
   const [score, setScore] = useState(0)
+  
   const [RightOption, setRightOption] = useState(null)
   const [showNextButton, setShowNextButton] = useState(false)
   const [showScoreModal, setShowScoreModal] = useState(false)
@@ -45,7 +46,7 @@ const Home = ({route}) => {
   const [QuesFetched, setQuesFetched] = useState([]);
 
 
-console.log(RightOption,"right Option")
+
 
 
 
@@ -73,10 +74,12 @@ useEffect(() => {
 
 const allQuestions = QuesFetched;
 
+
+
 const validateAnswer = (selectedOption) => {
 
 
-    console.log(selectedOption,"Selected OP")
+    // console.log(selectedOption,"Selected OP")
     
    
     setCurrentOptionSelected(selectedOption);
@@ -84,21 +87,26 @@ const validateAnswer = (selectedOption) => {
    
 
     setIsOptionsDisabled(true);
-    if(selectedOption == RightOption){
-        // Set Score
+    const isOptionCorrect = selectedOption === allQuestions[currentQuestionIndex]?.correct;
+    // update score if option is correct
+    if (isOptionCorrect) {
+     setScore(score+1)
+    }
+  
+    // set right option for the current question
+    setRightOption(allQuestions[currentQuestionIndex]?.correct);
+  
+    setShowNextButton(true)
+}
+
+const ScoreUpdate = (option)=>{
+    if(option == RightOption){
         setScore(score + 1)
         
     }
-    
-    // Show Next Button
-    setShowNextButton(true)
 }
 console.log(score,"Score")
-// Destructuring questions array
-// const [ { question: question1, options: options1, correct: correct1 }, { question: question2, options: options2, correct: correct2 } ] = questions;
 
-// console.log(question1, options1, correct1);
-// console.log(question2, options2, correct2);
 
 const handleNext = () => {
     if(currentQuestionIndex== allQuestions.length-1){
@@ -121,7 +129,7 @@ const handleNext = () => {
 }
 const restartQuiz = () => {
     setShowScoreModal(false);
-
+setRightOption(null)
     setCurrentQuestionIndex(0);
     setScore(0);
 
@@ -143,7 +151,7 @@ const restartQuiz = () => {
 const renderQuestion = () => {
   return (
       <View style={{
-          marginVertical: 40
+          marginVertical: 20
       }}>
           {/* Question Counter */}
           <View style={{
@@ -159,7 +167,7 @@ const renderQuestion = () => {
               color: COLORS.white,
               fontFamily:"Nunito_800ExtraBold",
               fontSize: 25
-          }}>{allQuestions[currentQuestionIndex]?.question}</Text>
+          }}>Ques. {allQuestions[currentQuestionIndex]?.question}</Text>
       </View>
   )
 }
@@ -173,6 +181,7 @@ const renderOptions = () => {
                   <TouchableOpacity 
                   onPress={()=>{ 
                     validateAnswer(option,optionIndex)
+                    ScoreUpdate(option)
                 setRightOption( allQuestions[currentQuestionIndex]?.correct)
                 }}
                   disabled={isOptionsDisabled}
@@ -299,7 +308,7 @@ return (
          position:'relative'
      }}>
 <View>
-  <Text>{datax.title}</Text>
+  <Text style={{fontWeight:"bold",fontSize:20,color:"white"}}>{data}</Text>
 </View>
          {/* ProgressBar */}
          {/* { renderProgressBar() } */}
@@ -365,21 +374,8 @@ return (
              </View>
          </Modal>
 
-         {/* Background Image */}
-         <Image
-          source={require('../assets/DottedBG.png')}
-          style={{
-              width: SIZES.width,
-              height: 130,
-              zIndex: -1,
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              opacity: 0.5
-          }}
-          resizeMode={'contain'}
-          />
+    
+
 
      </View>
  </SafeAreaView>

@@ -24,16 +24,7 @@ const DATA = [
 const NewHome = ({ navigation }) => {
 
 
-	console.log(SIZES.width,'SIZES')
-	const flatListRef = useRef(null);
 
-	const [activeIndex, setActiveIndex] = useState(0);
-
-	const handleScroll = (event) => {
-	  const { contentOffset } = event.nativeEvent;
-	  const index = Math.round(contentOffset.x / screenWidth);
-	  setActiveIndex(index);
-	};
   
 	const renderItem = ({ item }) => {
 	  const { id, title } = item;
@@ -92,7 +83,7 @@ if(!FontLoaded){
 	return (
 		// <ImageBackground source={require('../assets/sd.jpg')} style={{ flex: 1 }}>
 
-		<View className="bg-[#FAF9F6] relative  flex-1">
+		<View className="bg-[#FAF9F6] relative  ">
 			<StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
 			<View style={{display:"flex",flexDirection:"row",width:SIZES.width,justifyContent:"space-between",marginTop:7,alignItems:"center"}}>
 			<Text style={{fontFamily:"Nunito_800ExtraBold",paddingHorizontal:10,fontSize:20,color:"black"}}>Classes</Text>
@@ -108,12 +99,8 @@ if(!FontLoaded){
         data={DATA}
         renderItem={renderItem}
         horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        onScroll={handleScroll}
-		scrollEventThrottle={16}
-		decelerationRate={0}
-        snapToInterval={ITEM_SIZE + ITEM_SPACING * 8}
+    showsHorizontalScrollIndicator={false}
+      
        
       />
 
@@ -133,17 +120,20 @@ if(!FontLoaded){
                                   }} />
 								  </TouchableOpacity>
 			</View>
+			<View style={{width:SIZES.width,paddingHorizontal:3,display:"flex",justifyContent:"space-between"}}>
 			<FlatList
 				data={Datas}
 				numColumns={2}
 				renderItem={(g) => {
 					return (
-						<View className="p-2">
+						<View className="p-2 ">
 							<TouchableOpacity
 								onPress={() =>
 									navigation.navigate("FrontTitle", { data: g.item.title })
 								}
 							>
+
+								
 								<View className="mt- h-[110px] w-[180px]   bg-[#471598] rounded-md flex justify-center items-center">
 									<View>
 										<Image
@@ -160,7 +150,9 @@ if(!FontLoaded){
 									<Text style={{
 										fontFamily:"Nunito_800ExtraBold",
 										fontSize:15,
-										color:"white"
+										color:"white",
+										marginTop:3
+						
 									}}>
 										{g.item.title}
 									</Text>
@@ -170,6 +162,7 @@ if(!FontLoaded){
 					);
 				}}
 			/>
+			</View>
 		</View>
 		// </ImageBackground>
 	);
