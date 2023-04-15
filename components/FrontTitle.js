@@ -3,10 +3,16 @@ import React, { useEffect,useState } from 'react'
 import client from './QuestionItem';
 import { FlatList } from 'react-native';
 import { COLORS, SIZES } from "./Constant";
+import {useFonts,Nunito_600SemiBold,Nunito_800ExtraBold} from "@expo-google-fonts/nunito"
 
 
 const FrontTitle = ({navigation,route}) => {
 
+
+let [FontLoaded] = useFonts({
+	Nunito_600SemiBold,
+	Nunito_800ExtraBold
+})
 
   const {data} = route.params;
   console.log("djsh",data)
@@ -34,13 +40,22 @@ const FrontTitle = ({navigation,route}) => {
     const FilData = Datas.filter((g)=>g.categories.title == data)
     console.log(FilData,"FIfsja")
 
+
+    if(!FontLoaded){
+      return(
+        <View>
+          <Text>Loading</Text>
+        </View>
+      )
+    }
+    
+
   return (
     <View className="bg-[#1F1047] relative  flex-1">
       			<StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
 
-            <View className="mt-3 h-[80px]  mx-3  bg-[#38E9BB] rounded-md flex justify-center items-center">
-				<Text className="text-3xl  font-semibold ">{data}</Text>
-			</View>
+				<Text style={{fontFamily:"Nunito_800ExtraBold",fontSize:20,marginLeft:10,marginTop:10,color:"white"}}>{data}</Text>
+			
             <FlatList
             data={FilData}
             renderItem={(g)=>{

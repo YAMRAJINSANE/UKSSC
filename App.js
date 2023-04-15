@@ -13,10 +13,11 @@ export default function App() {
 			<Tab.Navigator
 		screenOptions={{
 			tabBarStyle: {
-			  backgroundColor: '#1F1047',
+			  backgroundColor: '#471598',
 			  height: 60,
 			 
 			},
+			tabBarInactiveTintColor:"gray"
 			
 		  }}
 			
@@ -28,7 +29,7 @@ export default function App() {
 						tabBarIcon: ({color, size}) => (
 						  <MaterialCommunityIcons
 							name="home"
-							color={color}
+							color="#fff"
 							size={size+10}
 						  />
 						),

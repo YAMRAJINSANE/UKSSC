@@ -3,6 +3,10 @@ import React, { useState ,useEffect} from 'react'
 import fata from "./Quiz"
 import {COLORS, SIZES }from "./Constant"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useFonts,Nunito_600SemiBold,Nunito_800ExtraBold} from "@expo-google-fonts/nunito"
+
+	
+
 // import  { createClient } from '@sanity/client'
 import 'url-search-params-polyfill';
 import client from './QuestionItem';
@@ -18,7 +22,10 @@ import client from './QuestionItem';
 const Home = ({route}) => {
 
     const {data} = route.params;
-
+    let [FontLoaded] = useFonts({
+        Nunito_600SemiBold,
+        Nunito_800ExtraBold
+    })
 
   const params = new URLSearchParams();
   params.set('key', 'value');
@@ -130,6 +137,9 @@ const restartQuiz = () => {
 }
 
 
+
+
+
 const renderQuestion = () => {
   return (
       <View style={{
@@ -147,6 +157,7 @@ const renderQuestion = () => {
           {/* Question */}
           <Text style={{
               color: COLORS.white,
+              fontFamily:"Nunito_800ExtraBold",
               fontSize: 25
           }}>{allQuestions[currentQuestionIndex]?.question}</Text>
       </View>
@@ -185,7 +196,7 @@ const renderOptions = () => {
                       marginVertical: 10
                   }}
                   >
-                      <Text style={{fontSize: 20, color: COLORS.white}}>{option}</Text>
+                      <Text style={{fontSize: 20, color: COLORS.white,fontFamily:"Nunito_800ExtraBold"}}>{option}</Text>
 
                       {/* Show Check Or Cross Icon based on correct answer*/}
                       {
@@ -266,6 +277,15 @@ const renderProgressBar = () => {
 }
 
 
+if(!FontLoaded){
+	return(
+		<View>
+			<Text>Loading</Text>
+		</View>
+	)
+}
+
+
 return (
  <SafeAreaView style={{
      flex: 1
@@ -273,7 +293,7 @@ return (
      <StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
      <View style={{
          flex: 1,
-         paddingVertical: 40,
+         paddingVertical: 5,
          paddingHorizontal: 16,
          backgroundColor: COLORS.background,
          position:'relative'
@@ -282,7 +302,7 @@ return (
   <Text>{datax.title}</Text>
 </View>
          {/* ProgressBar */}
-         { renderProgressBar() }
+         {/* { renderProgressBar() } */}
 
          {/* Question */}
          {renderQuestion()}
