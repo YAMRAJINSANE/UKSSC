@@ -16,9 +16,9 @@ import {
 	Nunito_600SemiBold,
 	Nunito_800ExtraBold,
 } from "@expo-google-fonts/nunito";
-import AllClasses from "../components/AllClasses";
 import FeaturedFornt from "../components/FeaturedFornt";
 import FetauredQuizes from "../components/FetauredQuizes";
+import SubCat from "../components/SubCat";
 
 const Stack = createStackNavigator();
 
@@ -145,23 +145,7 @@ function MyStack() {
 				}}
 				component={FrontTitle}
 			/>
-			<Stack.Screen
-				name="AllClasses"
-				options={{
-					title: "SSC Quizler",
-					headerStyle: {
-						backgroundColor: "#471598",
-						elevation: 5,
-						shadowOpacity: 0.5,
-					},
-					headerTintColor: "#fff",
-					headerTitleStyle: {
-						fontWeight: "bold",
-					},
-					headerTitleAlign: "center",
-				}}
-				component={AllClasses}
-			/>
+		
 			<Stack.Screen
 				name="FeaturedFornt"
 				options={{
@@ -195,6 +179,23 @@ function MyStack() {
 					headerTitleAlign: "center",
 				}}
 				component={FetauredQuizes}
+			/>
+			<Stack.Screen
+				name="SubCat"
+				options={{
+					title: "SSC Quizler",
+					headerStyle: {
+						backgroundColor: "#471598",
+						elevation: 5,
+						shadowOpacity: 0.5,
+					},
+					headerTintColor: "#fff",
+					headerTitleStyle: {
+						fontWeight: "bold",
+					},
+					headerTitleAlign: "center",
+				}}
+				component={SubCat}
 			/>
 		</Stack.Navigator>
 	);

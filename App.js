@@ -27,7 +27,9 @@ export default function App() {
 			  height: 60,
 			 
 			},
-			tabBarInactiveTintColor:"gray"
+			tabBarInactiveTintColor:"#1F1047",
+			tabBarActiveTintColor:"white"
+		
 			
 		  }}
 			
@@ -39,18 +41,52 @@ export default function App() {
 						tabBarIcon: ({color, size}) => (
 						  <MaterialCommunityIcons
 							name="home"
-							color="#fff"
+							color={color}
 							size={size+10}
 						  />
 						),
 					  }}/>
 				<Tab.Screen name="Settings" component={Setting} options={{
 					 tabBarShowLabel:false,
-					headerShown:false,
+					headerShown:true,
+					title: "SSC Quizler",
+					headerStyle: {
+						backgroundColor: "#471598",
+						elevation: 5,
+						shadowOpacity: 0.5,
+					},
+					headerTintColor: "#fff",
+					headerTitleStyle: {
+						fontWeight: "bold",
+					},
+					headerTitleAlign: "center",
+					headerLeft: () => (
+						<MaterialCommunityIcons
+							name="menu"
+							size={30}
+							color="#471598"
+							style={{ marginLeft: 10, padding: 2, color: "white" }}
+							onPress={() => {
+								// handle left menu icon press
+							}}
+						/>
+					),
+					headerRight: () => (
+						<MaterialCommunityIcons
+							name="youtube"
+							size={33}
+							color="#fff"
+							style={{ marginRight: 10 }}
+							onPress={() => {
+								// handle right youtube icon press
+							}}
+						/>
+					),
+					
 					tabBarLabel: 'Settings',
           tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons
-              name="account-settings"
+              name="bookshelf"
               color={color}
               size={size +10}
             />

@@ -102,7 +102,7 @@ const ScoreUpdate = (option)=>{
         
     }
 }
-console.log(score,"Score")
+
 
 
 const handleNext = () => {
@@ -325,7 +325,9 @@ return (
 </View>
 <ScrollView
 showsVerticalScrollIndicator={false}
-
+style={{
+    marginBottom:15
+}}
 >
 
 

@@ -102,7 +102,7 @@ const ScoreUpdate = (option)=>{
         
     }
 }
-console.log(score,"Score")
+
 
 
 const handleNext = () => {
