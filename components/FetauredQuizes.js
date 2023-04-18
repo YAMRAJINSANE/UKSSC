@@ -15,7 +15,7 @@ import client from './QuestionItem';
 
 
 
-const Home = ({route}) => {
+const FetauredQuizes = ({route}) => {
 
     const {data} = route.params;
     let [FontLoaded] = useFonts({
@@ -49,7 +49,7 @@ const Home = ({route}) => {
 useEffect(() => {
   
     client.fetch(`
-    *[_type == 'exam']{
+    *[_type == 'weeklyCurrentAffair']{
       _id,
       title,
       questions,
@@ -404,4 +404,4 @@ showsVerticalScrollIndicator={false}
 )
 }
 
-export default Home
+export default FetauredQuizes

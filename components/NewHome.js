@@ -6,6 +6,9 @@ import { COLORS, SIZES } from "./Constant";
 import {useFonts,Nunito_600SemiBold,Nunito_800ExtraBold} from "@expo-google-fonts/nunito"
 
 import MaterialCommunityIcons from 'react-native-vector-icons/Entypo';
+import { Pressable } from "react-native";
+
+const numColumns = 2;
 
 
 const DATA = [
@@ -23,14 +26,21 @@ const DATA = [
 
 const NewHome = ({ navigation }) => {
 
+	
 
 
-  
+
 	const renderItem = ({ item }) => {
 	  const { id, title } = item;
 
 	  return (
 		<View style={{width:ITEM_SIZE,marginHorizontal:10, backgroundColor:"gray",borderRadius:10,justifyContent:"center",alignItems:"center",elevation:5}}>
+	
+      
+
+		 
+		 
+		 
 		  <Text style={styles.title}>{title}</Text>
 		</View>
 	  );
@@ -39,13 +49,22 @@ const NewHome = ({ navigation }) => {
 
 
 
-
+	const [columnWidth, setColumnWidth] = useState(0);
 
 	const [Datas, setDatas] = useState([]);
+	const [DatasFeatured, setDatasFeatured] = useState([]);
 let [FontLoaded] = useFonts({
 	Nunito_600SemiBold,
 	Nunito_800ExtraBold
 })
+
+
+
+useEffect(() => {
+   
+    setColumnWidth(SIZES.width/ numColumns);
+  }, []);
+
 
 
 useEffect(() => {
@@ -62,7 +81,26 @@ useEffect(() => {
 		)
 		.then((res) => {
 			setDatas(res);
-			console.log(res, "gjhfg");
+		
+		});
+}, []);
+
+
+useEffect(() => {
+	client
+		.fetch(
+			`
+	*[_type == 'weeklyCurrentAffair']{
+		_id,
+		title,
+	   "imageUrl": image.asset->url
+	   
+	  }
+  `
+		)
+		.then((res) => {
+			setDatasFeatured(res);
+			console.log(res, "Featured Data");
 		});
 }, []);
 
@@ -86,18 +124,50 @@ if(!FontLoaded){
 		<View className="bg-[#FAF9F6] relative  ">
 			<StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
 			<View style={{display:"flex",flexDirection:"row",width:SIZES.width,justifyContent:"space-between",marginTop:7,alignItems:"center"}}>
-			<Text style={{fontFamily:"Nunito_800ExtraBold",paddingHorizontal:10,fontSize:20,color:"black"}}>Classes</Text>
+			<Text style={{fontFamily:"Nunito_800ExtraBold",paddingHorizontal:10,fontSize:20,color:"black"}}>Weekly Curent </Text>
 
+			<TouchableOpacity
+								onPress={() =>
+									navigation.navigate("FeaturedFornt")
+								}
+							>
 			<MaterialCommunityIcons name="chevron-small-right" style={{
                                       color: "black",
                                       fontSize: 35,
 									
                                   }} />
+								  </TouchableOpacity>
 			</View>
 			
+	 	
 			<FlatList
-        data={DATA}
-        renderItem={renderItem}
+        data={DatasFeatured}
+        renderItem={(h)=>{
+return(
+	<Pressable
+ onPress={()=>navigation.navigate("FetauredQuizes",{data:h.item.title})}
+	>
+<View style={{width:ITEM_SIZE,marginHorizontal:10,borderRadius:10,justifyContent:"center",alignItems:"center",elevation:2,height:200}}>
+
+
+	
+<Image
+											source={{
+												uri: `${h.item.imageUrl}`,
+											}}
+											style={{
+												height: "100%",
+												width:"100%",
+                                                borderRadius:10,
+											
+											}}
+
+											
+										/>
+	</View>
+										</Pressable>
+)
+		}}
         horizontal
     showsHorizontalScrollIndicator={false}
       
@@ -120,13 +190,21 @@ if(!FontLoaded){
                                   }} />
 								  </TouchableOpacity>
 			</View>
-			<View style={{width:SIZES.width,paddingHorizontal:3,display:"flex",justifyContent:"space-between"}}>
+
+
+			
+			<View>
+
+
+
+
+
 			<FlatList
 				data={Datas}
 				numColumns={2}
 				renderItem={(g) => {
 					return (
-						<View className="p-2 ">
+						<View style={{width:columnWidth,display:"flex",justifyContent:"center",alignItems:"center"}}>
 							<TouchableOpacity
 								onPress={() =>
 									navigation.navigate("FrontTitle", { data: g.item.title })
@@ -134,7 +212,16 @@ if(!FontLoaded){
 							>
 
 								
-								<View className="mt- h-[110px] w-[180px]   bg-[#471598] rounded-md flex justify-center items-center">
+								<View style={{
+									backgroundColor:"green",
+									display:"flex",justifyContent:"center",
+									alignItems:"center",margin: 8,
+									backgroundColor: '#471598',
+									borderRadius: 8,
+									paddingVertical:10,
+									width:SIZES.width/2 -20
+									
+								}}>
 									<View>
 										<Image
 											source={{

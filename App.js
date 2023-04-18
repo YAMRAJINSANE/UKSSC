@@ -5,11 +5,21 @@ import Setting from "./components/Setting";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import NewHome from "./components/NewHome";
 import MyStack from "./navigation/StackNav";
+
+
+
+
+
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+	
+
+	
+
 	return (
-		<NavigationContainer>
+	
+        <NavigationContainer>
 			<Tab.Navigator
 		screenOptions={{
 			tabBarStyle: {
@@ -47,5 +57,7 @@ export default function App() {
           ),}}/>
 			</Tab.Navigator>
 		</NavigationContainer>
+	    
+		
 	);
 }
