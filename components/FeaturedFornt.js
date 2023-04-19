@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Image, Dimensions } from "react-native";
+import { View, Text, Pressable, Image, Dimensions ,ActivityIndicator} from "react-native";
 import React from "react";
 import { useEffect, useState } from "react";
 import client from "./QuestionItem";
@@ -16,6 +16,7 @@ const ITEM_SPACING = (screenWidth - ITEM_SIZE) / 2;
 
 const FeaturedFornt = ({ navigation }) => {
 	const [FtechedData, setFtechedData] = useState([]);
+	const [DataLoaded, setDataLoaded] = useState(true);
 
 	let [FontLoaded] = useFonts({
 		Nunito_600SemiBold,
@@ -26,7 +27,7 @@ const FeaturedFornt = ({ navigation }) => {
 		client
 			.fetch(
 				`
-        *[_type == 'weeklyCurrentAffair']{
+        *[_type == 'weeklyCurrentAffair'] | order(_createdAt desc) {
             _id,
             title,
            "imageUrl": image.asset->url
@@ -36,7 +37,7 @@ const FeaturedFornt = ({ navigation }) => {
 			)
 			.then((res) => {
 				setFtechedData(res);
-				
+				setDataLoaded(false)
 			});
 	}, []);
 
@@ -60,52 +61,66 @@ const FeaturedFornt = ({ navigation }) => {
 			>
 				Weekly Curent Affairs
 			</Text>
+			{DataLoaded?( 
+        <View
+        style={{
+            flex:1,
+            justifyContent:"center",
+            alignItems:"center"
+        }}
+        >
 
-			<FlatList
-				data={FtechedData}
-				renderItem={(h) => {
-					return (
-						<Pressable
-							onPress={() =>
-								navigation.navigate("FetauredQuizes", { data: h.item.title })
-							}
+     
+        <ActivityIndicator size="large" color="#471598" />
+        </View>
+        
+        
+        ):(<FlatList
+			data={FtechedData}
+			renderItem={(h) => {
+				return (
+					<Pressable
+						onPress={() =>
+							navigation.navigate("FetauredQuizes", { data: h.item.title })
+						}
+					>
+						<View
+							style={{
+								width: SIZES.width,
+								borderRadius: 10,
+								flex: 1,
+								marginTop: 10,
+								paddingHorizontal: 10,
+							}}
 						>
-							<View
+							<Image
+								source={{
+									uri: `${h.item.imageUrl}`,
+								}}
 								style={{
-									width: SIZES.width,
+									height: 180,
+									width: "100%",
 									borderRadius: 10,
-									flex: 1,
-									marginTop: 10,
+								}}
+							/>
+
+							<Text
+								style={{
+									fontFamily: "Nunito_800ExtraBold",
 									paddingHorizontal: 10,
+									fontSize: 16,
+									color: "white",
+									marginTop: 2,
 								}}
 							>
-								<Image
-									source={{
-										uri: `${h.item.imageUrl}`,
-									}}
-									style={{
-										height: 180,
-										width: "100%",
-										borderRadius: 10,
-									}}
-								/>
-
-								<Text
-									style={{
-										fontFamily: "Nunito_800ExtraBold",
-										paddingHorizontal: 10,
-										fontSize: 16,
-										color: "white",
-										marginTop: 2,
-									}}
-								>
-									{h.item.title}
-								</Text>
-							</View>
-						</Pressable>
-					);
-				}}
-			/>
+								{h.item.title}
+							</Text>
+						</View>
+					</Pressable>
+				);
+			}}
+		/>)}
+			
 		</View>
 	);
 };

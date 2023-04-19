@@ -5,7 +5,7 @@ import Setting from "./components/Setting";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import NewHome from "./components/NewHome";
 import MyStack from "./navigation/StackNav";
-
+import BookStack from "./navigation/BookStack";
 
 
 
@@ -46,44 +46,14 @@ export default function App() {
 						  />
 						),
 					  }}/>
-				<Tab.Screen name="Settings" component={Setting} options={{
+				<Tab.Screen name="Settings" component={BookStack} options={{
 					 tabBarShowLabel:false,
-					headerShown:true,
-					title: "SSC Quizler",
-					headerStyle: {
-						backgroundColor: "#471598",
-						elevation: 5,
-						shadowOpacity: 0.5,
-					},
-					headerTintColor: "#fff",
-					headerTitleStyle: {
-						fontWeight: "bold",
-					},
-					headerTitleAlign: "center",
-					headerLeft: () => (
-						<MaterialCommunityIcons
-							name="menu"
-							size={30}
-							color="#471598"
-							style={{ marginLeft: 10, padding: 2, color: "white" }}
-							onPress={() => {
-								// handle left menu icon press
-							}}
-						/>
-					),
-					headerRight: () => (
-						<MaterialCommunityIcons
-							name="youtube"
-							size={33}
-							color="#fff"
-							style={{ marginRight: 10 }}
-							onPress={() => {
-								// handle right youtube icon press
-							}}
-						/>
-					),
+					headerShown:false,
 					
-					tabBarLabel: 'Settings',
+					
+				
+					
+					
           tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons
               name="bookshelf"

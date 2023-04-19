@@ -58,8 +58,8 @@ useEffect(() => {
         }
     }
   `).then((Geted)=>{
-    setDataLoaded(false)
-   setData(Geted)
+      setData(Geted)
+      setDataLoaded(false)
     const filteredData = Geted.filter((item) => item.title == data);
     
     
@@ -76,7 +76,7 @@ const allQuestions = QuesFetched;
 const validateAnswer = (selectedOption) => {
 
 
-    // console.log(selectedOption,"Selected OP")
+    // .log(selectedOption,"Selected OP")
     
    
     setCurrentOptionSelected(selectedOption);

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StatusBar, Image } from "react-native";
+import { View, Text, TouchableOpacity, StatusBar, Image,ActivityIndicator, } from "react-native";
 import React, { useEffect, useState } from "react";
 import client from "./QuestionItem";
 import { FlatList } from "react-native";
@@ -22,6 +22,7 @@ const FrontTitle = ({ navigation, route }) => {
 
 	const [columnWidth, setColumnWidth] = useState(0);
 	const [Datas, setDatas] = useState([]);
+	const [DataLoaded, setDataLoaded] = useState(true);
 
 
 
@@ -44,6 +45,7 @@ const FrontTitle = ({ navigation, route }) => {
 			)
 			.then((res) => {
 				setDatas(res);
+				setDataLoaded(false)
 			
 			});
 	}, []);
@@ -75,7 +77,18 @@ const FrontTitle = ({ navigation, route }) => {
 				{data}
 			</Text>
 
-			<FlatList
+			{DataLoaded?(      <View
+        style={{
+            flex:1,
+            justifyContent:"center",
+            alignItems:"center",
+			backgroundColor:"#1F1047"
+        }}
+        >
+
+     
+        <ActivityIndicator size="large" color="#471598" />
+        </View>):(	<FlatList
 				data={FilData}
         
 				renderItem={(g) => {
@@ -138,7 +151,9 @@ const FrontTitle = ({ navigation, route }) => {
 					);
 				}}
         numColumns={2}
-			/>
+			/>)}
+
+		
 		</View>
 	);
 };

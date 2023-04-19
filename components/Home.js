@@ -1,6 +1,5 @@
 import { View, Text, SafeAreaView, StatusBar, Image, TouchableOpacity, Modal, Animated, ScrollView,ActivityIndicator } from 'react-native'
 import React, { useState ,useEffect} from 'react'
-import fata from "./Quiz"
 import {COLORS, SIZES }from "./Constant"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useFonts,Nunito_600SemiBold,Nunito_800ExtraBold} from "@expo-google-fonts/nunito"
@@ -303,7 +302,8 @@ return (
         style={{
             flex:1,
             justifyContent:"center",
-            alignItems:"center"
+            alignItems:"center",
+            backgroundColor:"#1F1047"
         }}
         >
 

@@ -98,7 +98,7 @@ const NewHome = ({ navigation }) => {
 		client
 			.fetch(
 				`
-	*[_type == 'weeklyCurrentAffair']{
+	*[_type == 'weeklyCurrentAffair']  | order(_createdAt desc) {
 		_id,
 		title,
 	   "imageUrl": image.asset->url
