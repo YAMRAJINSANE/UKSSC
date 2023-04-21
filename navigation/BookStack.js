@@ -75,7 +75,7 @@ function BookStack() {
 		>
             	<Stack.Screen
 				options={{
-					title: "SSC Quizler",
+					title: "SSC Lucent Genius",
 					headerStyle: {
 						backgroundColor: "#471598",
 						elevation: 5,
@@ -115,7 +115,7 @@ function BookStack() {
 			<Stack.Screen
 
 				options={{
-                    title: "SSC Quizler",
+                    title: "SSC Lucent Genius",
 					headerStyle: {
 						backgroundColor: "#471598",
 						elevation: 5,

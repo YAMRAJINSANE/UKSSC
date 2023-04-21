@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "SSC Quizler",
+    "name": "SSC Lucent Genius",
     "slug": "gg",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -22,7 +22,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.akashjnv007.gg"
+      "package": "com.akashjnv007.gg",
+      "versionCode":1
+
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -73,7 +73,7 @@ function MyStack() {
 		>
 			<Stack.Screen
 				options={{
-					title: "SSC Quizler",
+					title: "SSC Lucent Genius",
 					headerStyle: {
 						backgroundColor: "#471598",
 						elevation: 5,
@@ -113,7 +113,7 @@ function MyStack() {
 
 			<Stack.Screen
 				options={{
-					title: "SSC Quizler",
+					title: "SSC Lucent Genius",
 					headerStyle: {
 						backgroundColor: "#471598",
 						elevation: 5,
@@ -131,7 +131,7 @@ function MyStack() {
 			<Stack.Screen
 				name="FrontTitle"
 				options={{
-					title: "SSC Quizler",
+					title: "SSC Lucent Genius",
 					headerStyle: {
 						backgroundColor: "#471598",
 						elevation: 5,
@@ -149,7 +149,7 @@ function MyStack() {
 			<Stack.Screen
 				name="FeaturedFornt"
 				options={{
-					title: "SSC Quizler",
+					title: "SSC Lucent Genius",
 					headerStyle: {
 						backgroundColor: "#471598",
 						elevation: 5,
@@ -166,7 +166,7 @@ function MyStack() {
 			<Stack.Screen
 				name="FetauredQuizes"
 				options={{
-					title: "SSC Quizler",
+					title: "SSC Lucent Genius",
 					headerStyle: {
 						backgroundColor: "#471598",
 						elevation: 5,
@@ -183,7 +183,7 @@ function MyStack() {
 			<Stack.Screen
 				name="SubCat"
 				options={{
-					title: "SSC Quizler",
+					title: "SSC Lucent Genius",
 					headerStyle: {
 						backgroundColor: "#471598",
 						elevation: 5,
