@@ -27,7 +27,7 @@ const SubCat = ({ navigation, route }) => {
 		client
 			.fetch(
 				`
-        *[_type == 'exam']{
+        *[_type == 'exam'] | order(_createdAt asc)  {
             _id,
             title,
             categories[0]->{

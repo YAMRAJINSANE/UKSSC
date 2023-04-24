@@ -1,4 +1,6 @@
 import { View, Text, TouchableOpacity, StatusBar, Image,  ActivityIndicator } from "react-native";
+import { BannerAd, BannerAdSize, TestIds, InterstitialAd, AdEventType, RewardedInterstitialAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
+
 import React, { useEffect, useState } from "react";
 import client from "./QuestionItem";
 import { FlatList } from "react-native";
@@ -9,7 +11,15 @@ import {
 	Nunito_800ExtraBold,
 } from "@expo-google-fonts/nunito";
 
+const adUnitIdIn = 'ca-app-pub-8098715833653221/8702994590';
 
+
+const interstitial = InterstitialAd.createForAdRequest(adUnitIdIn, {
+	requestNonPersonalizedAdsOnly: true
+  });
+
+
+  const adUnitId = 'ca-app-pub-8098715833653221/2567178692';
 const numColumns = 2
 const BookCat = ({ navigation}) => {
 	let [FontLoaded] = useFonts({
@@ -22,7 +32,7 @@ const BookCat = ({ navigation}) => {
 	const [columnWidth, setColumnWidth] = useState(0);
 	const [Datas, setDatas] = useState([]);
     const [DataLoaded, setDataLoaded] = useState(true);
-
+	const [interstitialLoaded, setInterstitialLoaded] = useState(false);
 
 
 
@@ -33,7 +43,7 @@ const BookCat = ({ navigation}) => {
 		client
 			.fetch(
 				`
-                *[_type == 'bookCat']{
+                *[_type == 'bookCat'] | order(_createdAt desc) {
                     _id,
                      title,
                         "imageUrl": image.asset->url,
@@ -49,6 +59,40 @@ const BookCat = ({ navigation}) => {
 
 	// const FilData = Datas.filter((g) => g.categories.title == data);
 	
+	const loadInterstitial = () => {
+		const unsubscribeLoaded = interstitial.addAdEventListener(
+		  AdEventType.LOADED,
+		  () => {
+			setInterstitialLoaded(true);
+		  }
+		);
+	
+		const unsubscribeClosed = interstitial.addAdEventListener(
+		  AdEventType.CLOSED,
+		  () => {
+			setInterstitialLoaded(false);
+			interstitial.load();
+		  }
+		);
+	
+		interstitial.load();
+	
+		return () => {
+		  unsubscribeClosed();
+		  unsubscribeLoaded();
+		}
+	  }
+	
+	  useEffect(() => {
+		const unsubscribeInterstitialEvents = loadInterstitial();
+		
+	
+		return () => {
+		  unsubscribeInterstitialEvents();
+		 
+		};
+	  }, [])
+
 
 	if (!FontLoaded) {
 		return (
@@ -87,14 +131,25 @@ const BookCat = ({ navigation}) => {
         </View>
         
         
-        ):(	<FlatList
+        ):(	
+        
+            <View
+            style={{
+                marginBottom:150
+            }}
+            
+            >
+        <FlatList
             data={Datas}
     
             renderItem={(g) => {
                 return (
                     <TouchableOpacity
-                        onPress={() =>
+                        onPress={() =>{
                             navigation.navigate("BookStack", { data: g.item.title })
+                            interstitial.show()
+                        }
+                          
                         }
                     >
                             <View
@@ -153,7 +208,30 @@ const BookCat = ({ navigation}) => {
                 );
             }}
     numColumns={2}
-        />)}
+        />
+       
+        
+        </View>
+        
+        )}
+
+<View
+style={{
+	position:"absolute",
+	bottom:0,
+	flex:1
+
+}}
+
+>
+<BannerAd
+      unitId={adUnitId}
+      size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+      requestOptions={{
+        requestNonPersonalizedAdsOnly: true,
+      }}
+    />
+	</View>
 		
 		</View>
 	);

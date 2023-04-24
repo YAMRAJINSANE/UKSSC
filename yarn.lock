@@ -1035,7 +1035,7 @@
   "resolved" "https://registry.npmjs.org/@babel/regjsgen/-/regjsgen-0.8.0.tgz"
   "version" "0.8.0"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.20.0", "@babel/runtime@^7.20.6", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.12.5", "@babel/runtime@^7.20.0", "@babel/runtime@^7.20.6", "@babel/runtime@^7.8.4":
   "integrity" "sha512-xwII0//EObnq89Ji5AKYQaRYiW/nZ3llSv29d49IuxPhKbtJoLP+9QUUZ4nVragQVtaVGeZrpB+ZtG/Pdy/POw=="
   "resolved" "https://registry.npmjs.org/@babel/runtime/-/runtime-7.21.0.tgz"
   "version" "7.21.0"
@@ -1430,6 +1430,11 @@
   "version" "5.1.0"
   dependencies:
     "@hapi/hoek" "^9.0.0"
+
+"@iabtcf/core@^1.5.3":
+  "integrity" "sha512-u2q9thI9vLurYZdGtyJsDYOqoeLc4EgQsYGSc+UVibYII61B/ENJPZS6eFlML1F0hSoTR/goptpo5nGRDkKd2w=="
+  "resolved" "https://registry.npmjs.org/@iabtcf/core/-/core-1.5.6.tgz"
+  "version" "1.5.6"
 
 "@jest/create-cache-key-function@^29.2.1":
   "integrity" "sha512-LIDZyZgnZss7uikvBKBB/USWwG+GO8+GnwRWT+YkCGDGsqLQlhm9BC3z6+7+eMs1kUlvXQIWEzBR8Q2Pnvx6lg=="
@@ -3200,6 +3205,11 @@
     "invariant" "*"
     "prop-types" "*"
 
+"dequal@^2.0.2":
+  "integrity" "sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA=="
+  "resolved" "https://registry.npmjs.org/dequal/-/dequal-2.0.3.tgz"
+  "version" "2.0.3"
+
 "destroy@1.2.0":
   "integrity" "sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg=="
   "resolved" "https://registry.npmjs.org/destroy/-/destroy-1.2.0.tgz"
@@ -3398,6 +3408,39 @@
     "@expo/config" "~8.0.0"
     "uuid" "^3.3.2"
 
+"expo-dev-client@^2.2.1":
+  "integrity" "sha512-BDhKyni82LiT6PypgBns1/FLqo3cGDBluaj4/Pojx9P7x9iwOFcesepO8r6BCWb4LuBjdB+z2yQ1fMXxzNC3qQ=="
+  "resolved" "https://registry.npmjs.org/expo-dev-client/-/expo-dev-client-2.2.1.tgz"
+  "version" "2.2.1"
+  dependencies:
+    "expo-dev-launcher" "2.2.1"
+    "expo-dev-menu" "2.2.0"
+    "expo-dev-menu-interface" "1.1.1"
+    "expo-manifests" "~0.5.0"
+    "expo-updates-interface" "~0.9.0"
+
+"expo-dev-launcher@2.2.1":
+  "integrity" "sha512-TP9SOrNIKF5Whju7uhtBsJeOvf9idUSg7snhHNVRpm2mA5kReckeD3PFv4HsvBHdnrfoslpeq4spOdS6UUx3XA=="
+  "resolved" "https://registry.npmjs.org/expo-dev-launcher/-/expo-dev-launcher-2.2.1.tgz"
+  "version" "2.2.1"
+  dependencies:
+    "expo-dev-menu" "2.2.0"
+    "resolve-from" "^5.0.0"
+    "semver" "^7.3.5"
+
+"expo-dev-menu-interface@1.1.1":
+  "integrity" "sha512-doT+7WrSBnxCcTGZw9QIEZoL+43U4RywbG8XZwbhkcsFWGsh9scp0y/bv3ieFHxRtIdImxbxOoYh7fy1O6g28w=="
+  "resolved" "https://registry.npmjs.org/expo-dev-menu-interface/-/expo-dev-menu-interface-1.1.1.tgz"
+  "version" "1.1.1"
+
+"expo-dev-menu@2.2.0":
+  "integrity" "sha512-ImRUD7IVyLme7t3S+pNsOOgCBorkriVNo+ryEmkAjzRTKlpiklhoc1GEdQUU3qvO6e66gUguMbs4wnaP6o4NEw=="
+  "resolved" "https://registry.npmjs.org/expo-dev-menu/-/expo-dev-menu-2.2.0.tgz"
+  "version" "2.2.0"
+  dependencies:
+    "expo-dev-menu-interface" "1.1.1"
+    "semver" "^7.3.5"
+
 "expo-file-system@~15.2.0", "expo-file-system@~15.2.2":
   "integrity" "sha512-LFkOLcWwlmnjkURxZ3/0ukS35OswX8iuQknLHRHeyk8mUA8fpRPPelD/a1lS+yclqfqavMJmTXVKM1Nsq5XVMA=="
   "resolved" "https://registry.npmjs.org/expo-file-system/-/expo-file-system-15.2.2.tgz"
@@ -3412,6 +3455,11 @@
   dependencies:
     "fontfaceobserver" "^2.1.0"
 
+"expo-json-utils@~0.5.0":
+  "integrity" "sha512-Y5boshyf40vPjwxNnOIfacZPNkOymecZRQ1k+TSXlq6gnw5XRsnM5hnP0VLVYhdv8x+9CX6E1fDsDUNvsK38Dg=="
+  "resolved" "https://registry.npmjs.org/expo-json-utils/-/expo-json-utils-0.5.1.tgz"
+  "version" "0.5.1"
+
 "expo-keep-awake@~12.0.1":
   "integrity" "sha512-hqeCnb4033TyuZaXs93zTK7rjVJ3bywXATyMmKmKkLEsH2PKBAl/VmjlCOPQL/2Ncqz6aj7Wo//tjeJTARBD4g=="
   "resolved" "https://registry.npmjs.org/expo-keep-awake/-/expo-keep-awake-12.0.1.tgz"
@@ -3423,6 +3471,13 @@
   "version" "14.1.1"
   dependencies:
     "rtl-detect" "^1.0.2"
+
+"expo-manifests@~0.5.0":
+  "integrity" "sha512-WnsTlE2le3pV/B/AJPKTOSjb2K9AT1mPDCfQxTQ/KMCwF95saoXYt2OPF3hxZNaMAV6VIAhXgd5Y6wpcH9ruPQ=="
+  "resolved" "https://registry.npmjs.org/expo-manifests/-/expo-manifests-0.5.2.tgz"
+  "version" "0.5.2"
+  dependencies:
+    "expo-json-utils" "~0.5.0"
 
 "expo-modules-autolinking@>=0.8.1", "expo-modules-autolinking@1.1.2":
   "integrity" "sha512-oOlkAccVnHwwR5ccvF/F/x4Omj9HWzSimMUlIVz0SVGdNBEqTPyn0L/d4uIufhyQbEWvrarqL8o5Yz11wEI0SQ=="
@@ -3447,6 +3502,11 @@
   "integrity" "sha512-5DV0hIEWgatSC3UgQuAZBoQeaS9CqeWRZ3vzBR9R/+IUD87Adbi4FGhU10nymRqFXOizGsureButGZIXPs7zEA=="
   "resolved" "https://registry.npmjs.org/expo-status-bar/-/expo-status-bar-1.4.4.tgz"
   "version" "1.4.4"
+
+"expo-updates-interface@~0.9.0":
+  "integrity" "sha512-wk88LLhseQ7LJvxdN7BTKiryyqALxnrvr+lyHK3/prg76Yy0EGi2Q/oE/rtFyyZ1JmQDRbO/5pdX0EE6QqVQXQ=="
+  "resolved" "https://registry.npmjs.org/expo-updates-interface/-/expo-updates-interface-0.9.1.tgz"
+  "version" "0.9.1"
 
 "expo@*", "expo@~48.0.9":
   "integrity" "sha512-RlYpJSny4g3G2sqAfx1taaT7QFEw2cIfYLlZWmguA6EQSCviaeaQU1m4tvVXU1jIXb/w8jqer18XIq56VuECfg=="
@@ -6218,6 +6278,14 @@
     "lodash" "^4.17.21"
     "prop-types" "^15.7.2"
 
+"react-native-google-mobile-ads@^10.3.1":
+  "integrity" "sha512-IAHeBFvOc9hUDYh6/uxcd6okCXEuEBmBnN5DUjjFWyOdxWolTzbqUFvLfKZ8CE9rPTBCAiZefJY0fS/1Aea3IQ=="
+  "resolved" "https://registry.npmjs.org/react-native-google-mobile-ads/-/react-native-google-mobile-ads-10.3.1.tgz"
+  "version" "10.3.1"
+  dependencies:
+    "@iabtcf/core" "^1.5.3"
+    "use-deep-compare-effect" "^1.8.1"
+
 "react-native-gradle-plugin@^0.71.16":
   "integrity" "sha512-OXXYgpISEqERwjSlaCiaQY6cTY5CH6j73gdkWpK0hedxtiWMWgH+i5TOi4hIGYitm9kQBeyDu+wim9fA8ROFJA=="
   "resolved" "https://registry.npmjs.org/react-native-gradle-plugin/-/react-native-gradle-plugin-0.71.17.tgz"
@@ -6319,7 +6387,7 @@
     "object-assign" "^4.1.1"
     "react-is" "^16.12.0 || ^17.0.0 || ^18.0.0"
 
-"react@*", "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@>= 16.8.0", "react@>=16.0", "react@>=16.3.0", "react@>=17.0.0", "react@18.2.0":
+"react@*", "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@>= 16.8.0", "react@>=16.0", "react@>=16.13", "react@>=16.3.0", "react@>=17.0.0", "react@18.2.0":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"
@@ -7526,6 +7594,14 @@
   "integrity" "sha512-KmkCs6SjE6t4ihrfW9JelAPQIIIFbJweaaSLTh/4AO+c58JlDcb+GbdPt8yr5lRcFg4rPswRFRRhBGpWwh0K/Q=="
   "resolved" "https://registry.npmjs.org/url-search-params-polyfill/-/url-search-params-polyfill-8.1.1.tgz"
   "version" "8.1.1"
+
+"use-deep-compare-effect@^1.8.1":
+  "integrity" "sha512-kbeNVZ9Zkc0RFGpfMN3MNfaKNvcLNyxOAAd9O4CBZ+kCBXXscn9s/4I+8ytUER4RDpEYs5+O6Rs4PqiZ+rHr5Q=="
+  "resolved" "https://registry.npmjs.org/use-deep-compare-effect/-/use-deep-compare-effect-1.8.1.tgz"
+  "version" "1.8.1"
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "dequal" "^2.0.2"
 
 "use-latest-callback@^0.1.5":
   "integrity" "sha512-HtHatS2U4/h32NlkhupDsPlrbiD27gSH5swBdtXbCAlc6pfOFzaj0FehW/FO12rx8j2Vy4/lJScCiJyM01E+bQ=="

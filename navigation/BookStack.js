@@ -9,7 +9,7 @@ import Home from "../components/Home";
 import FrontTitle from "../components/FrontTitle";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { Easing, StatusBar, StyleSheet, Text, View } from "react-native";
+import { Easing, Linking, StatusBar, StyleSheet, Text, View } from "react-native";
 // import { Easing } from 'react-native';
 import {
 	useFonts,
@@ -73,6 +73,7 @@ function BookStack() {
 				headerStyleInterpolator: HeaderStyleInterpolators.forUIKit, // this adds the shadow to the header
 			}}
 		>
+			
             	<Stack.Screen
 				options={{
 					title: "SSC Lucent Genius",
@@ -104,7 +105,7 @@ function BookStack() {
 							color="#fff"
 							style={{ marginRight: 10 }}
 							onPress={() => {
-								// handle right youtube icon press
+								Linking.openURL("https://www.youtube.com/@SSCLucentGenius");
 							}}
 						/>
 					),

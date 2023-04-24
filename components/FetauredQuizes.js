@@ -1,4 +1,5 @@
 import { View, Text, SafeAreaView, StatusBar, Image, TouchableOpacity, Modal, Animated, ScrollView,ActivityIndicator } from 'react-native'
+import { BannerAd, BannerAdSize, TestIds, InterstitialAd, AdEventType, RewardedInterstitialAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
 import React, { useState ,useEffect} from 'react'
 import fata from "./Quiz"
 import {COLORS, SIZES }from "./Constant"
@@ -12,7 +13,12 @@ import 'url-search-params-polyfill';
 import client from './QuestionItem';
 
 
+const adUnitIdIn = 'ca-app-pub-8098715833653221/2030609180';
 
+
+const rewardedInterstitial = RewardedInterstitialAd.createForAdRequest(adUnitIdIn, {
+    requestNonPersonalizedAdsOnly: true
+  });
 
 
 const FetauredQuizes = ({route}) => {
@@ -27,7 +33,7 @@ const FetauredQuizes = ({route}) => {
   params.set('key', 'value');
 
 
-  
+  const [rewardedInterstitialLoaded, setRewardedInterstitialLoaded] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [currentOptionSelected, setCurrentOptionSelected] = useState(null);
 
@@ -134,6 +140,7 @@ setRightOption(null)
    
     setIsOptionsDisabled(false);
     setShowNextButton(false);
+    rewardedInterstitial.show()
     Animated.timing(progress, {
         toValue: 0,
         duration: 1000,
@@ -142,6 +149,48 @@ setRightOption(null)
 }
 
 
+
+const loadRewardedInterstitial = () => {
+    const unsubscribeLoaded = rewardedInterstitial.addAdEventListener(
+      RewardedAdEventType.LOADED,
+      () => {
+        setRewardedInterstitialLoaded(true);
+      }
+    );
+
+    const unsubscribeEarned = rewardedInterstitial.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        // console.log(`User earned reward of ${reward.amount} ${reward.type}`);
+      }
+    );
+
+    const unsubscribeClosed = rewardedInterstitial.addAdEventListener(
+      AdEventType.CLOSED,
+      () => {
+        setRewardedInterstitialLoaded(false);
+        rewardedInterstitial.load();
+      }
+    );
+
+    rewardedInterstitial.load();
+
+    return () => {
+      unsubscribeLoaded();
+      unsubscribeClosed();
+      unsubscribeEarned();
+    }
+  };
+
+  useEffect(() => {
+
+    const unsubscribeRewardedInterstitialEvents = loadRewardedInterstitial();
+
+    return () => {
+   
+      unsubscribeRewardedInterstitialEvents();
+    };
+  }, [])
 
 
 

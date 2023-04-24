@@ -1,4 +1,6 @@
 import { View, Text, TouchableOpacity, StatusBar, Image,ActivityIndicator, } from "react-native";
+import { BannerAd, BannerAdSize, TestIds, InterstitialAd, AdEventType, RewardedInterstitialAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
+
 import React, { useEffect, useState } from "react";
 import client from "./QuestionItem";
 import { FlatList } from "react-native";
@@ -10,7 +12,28 @@ import {
 } from "@expo-google-fonts/nunito";
 
 
+
 const numColumns = 2
+
+const adUnitIdIn = 'ca-app-pub-8098715833653221/8702994590';
+
+const interstitial = InterstitialAd.createForAdRequest(adUnitIdIn, {
+	requestNonPersonalizedAdsOnly: false
+  });
+
+
+  const adUnitId = 'ca-app-pub-8098715833653221/2567178692';
+
+
+
+
+
+
+
+
+
+
+
 const FrontTitle = ({ navigation, route }) => {
 	let [FontLoaded] = useFonts({
 		Nunito_600SemiBold,
@@ -23,7 +46,7 @@ const FrontTitle = ({ navigation, route }) => {
 	const [columnWidth, setColumnWidth] = useState(0);
 	const [Datas, setDatas] = useState([]);
 	const [DataLoaded, setDataLoaded] = useState(true);
-
+	const [interstitialLoaded, setInterstitialLoaded] = useState(false);
 
 
   useEffect(() => {
@@ -33,7 +56,7 @@ const FrontTitle = ({ navigation, route }) => {
 		client
 			.fetch(
 				`
-				*[_type == 'CategoryHead']{
+				*[_type == 'CategoryHead'] | order(_createdAt asc) {
 					title,
 					  "imageUrl": image.asset->url,
 						 categories[0]->{
@@ -52,6 +75,40 @@ const FrontTitle = ({ navigation, route }) => {
 
 	const FilData = Datas.filter((g) => g.categories.title == data);
 	
+
+	const loadInterstitial = () => {
+		const unsubscribeLoaded = interstitial.addAdEventListener(
+		  AdEventType.LOADED,
+		  () => {
+			setInterstitialLoaded(true);
+		  }
+		);
+	
+		const unsubscribeClosed = interstitial.addAdEventListener(
+		  AdEventType.CLOSED,
+		  () => {
+			setInterstitialLoaded(false);
+			interstitial.load();
+		  }
+		);
+	
+		interstitial.load();
+	
+		return () => {
+		  unsubscribeClosed();
+		  unsubscribeLoaded();
+		}
+	  }
+	
+	  useEffect(() => {
+		const unsubscribeInterstitialEvents = loadInterstitial();
+		
+	
+		return () => {
+		  unsubscribeInterstitialEvents();
+		 
+		};
+	  }, [])
 
 	if (!FontLoaded) {
 		return (
@@ -88,14 +145,27 @@ const FrontTitle = ({ navigation, route }) => {
 
      
         <ActivityIndicator size="large" color="#471598" />
-        </View>):(	<FlatList
+        </View>):(	
+		
+		<View
+		style={{
+			marginBottom:130
+		}}
+		
+		>
+
+		
+		<FlatList
 				data={FilData}
         
 				renderItem={(g) => {
 					return (
 						<TouchableOpacity
-							onPress={() =>
+							onPress={() =>{
 								navigation.navigate("SubCat", { data: g.item.title })
+								interstitial.show()
+							}
+								
 							}
 						>
 								<View
@@ -151,9 +221,30 @@ const FrontTitle = ({ navigation, route }) => {
 					);
 				}}
         numColumns={2}
-			/>)}
+			/>
+			
+			</View>
+			
+			)}
+			
 
-		
+<View
+style={{
+	position:"absolute",
+	bottom:0,
+	flex:1
+
+}}
+
+>
+<BannerAd
+      unitId={adUnitId}
+      size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+      requestOptions={{
+        requestNonPersonalizedAdsOnly: true,
+      }}
+    />
+	</View>
 		</View>
 	);
 };

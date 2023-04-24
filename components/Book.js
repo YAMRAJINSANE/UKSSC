@@ -34,7 +34,7 @@ const Book = ({ navigation, route }) => {
 		client
 			.fetch(
 				`
-                *[_type == 'book']{
+                *[_type == 'book']  | order(_createdAt desc){
                     _id,
                      title,
                         "imageUrl": image.asset->url,

@@ -1,5 +1,7 @@
 import { View, Text, Pressable, Image, Dimensions ,ActivityIndicator} from "react-native";
 import React from "react";
+import { BannerAd, BannerAdSize, TestIds, InterstitialAd, AdEventType, RewardedInterstitialAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
+
 import { useEffect, useState } from "react";
 import client from "./QuestionItem";
 import { COLORS, SIZES } from "./Constant";
@@ -9,6 +11,10 @@ import {
 	Nunito_600SemiBold,
 	Nunito_800ExtraBold,
 } from "@expo-google-fonts/nunito";
+
+
+const adUnitId = 'ca-app-pub-8098715833653221/2567178692';
+
 
 const { width: screenWidth } = Dimensions.get("window");
 const ITEM_SIZE = screenWidth * 0.8;
@@ -50,10 +56,28 @@ const FeaturedFornt = ({ navigation }) => {
 	}
 	return (
 		<View style={{ flex: 1,backgroundColor:"#1F1047" }}>
+
+<View
+style={{
+	position:"absolute",
+	bottom:0,
+	flex:1
+
+}}
+
+>
+<BannerAd
+      unitId={adUnitId}
+      size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+      requestOptions={{
+        requestNonPersonalizedAdsOnly: true,
+      }}
+    />
+	</View>
 			<Text
 				style={{
 					fontFamily: "Nunito_800ExtraBold",
-					paddingHorizontal: 10,
+					paddingHorizontal: 20,
 					fontSize: 20,
 					color: "white",
 					marginTop: 10,
@@ -75,7 +99,21 @@ const FeaturedFornt = ({ navigation }) => {
         </View>
         
         
-        ):(<FlatList
+        ):(
+		<View
+		
+		style={{
+			marginBottom:150
+		}}
+		
+		
+		>
+
+			
+
+
+
+			<FlatList
 			data={FtechedData}
 			renderItem={(h) => {
 				return (
@@ -87,7 +125,7 @@ const FeaturedFornt = ({ navigation }) => {
 						<View
 							style={{
 								width: SIZES.width,
-								borderRadius: 10,
+								borderRadius: 4,
 								flex: 1,
 								marginTop: 10,
 								paddingHorizontal: 10,
@@ -98,7 +136,7 @@ const FeaturedFornt = ({ navigation }) => {
 									uri: `${h.item.imageUrl}`,
 								}}
 								style={{
-									height: 180,
+									height: 200,
 									width: "100%",
 									borderRadius: 10,
 								}}
@@ -119,7 +157,11 @@ const FeaturedFornt = ({ navigation }) => {
 					</Pressable>
 				);
 			}}
-		/>)}
+		/>
+
+
+			</View>
+		)}
 			
 		</View>
 	);

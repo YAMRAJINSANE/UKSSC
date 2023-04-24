@@ -6,8 +6,11 @@ import {
 	StatusBar,
 	Dimensions,
 	StyleSheet,
+	SafeAreaView,
 	ActivityIndicator,
+	Button,
 } from "react-native";
+import { BannerAd, BannerAdSize, TestIds, InterstitialAd, AdEventType, RewardedInterstitialAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
 import React, { useEffect, useState, useRef } from "react";
 import client from "./QuestionItem";
 import { FlatList } from "react-native";
@@ -23,39 +26,21 @@ import { Pressable } from "react-native";
 
 const numColumns = 2;
 
-const DATA = [
-	{ id: "1", title: "Item 1" },
-	{ id: "2", title: "Item 2" },
-	{ id: "3", title: "Item 3" },
-	{ id: "4", title: "Item 4" },
-	{ id: "5", title: "Item 5" },
-];
+
+const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
+	requestNonPersonalizedAdsOnly: true
+  });
+
+
+  const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
 
 const { width: screenWidth } = Dimensions.get("window");
 const ITEM_SIZE = screenWidth * 0.8;
 const ITEM_SPACING = (screenWidth - ITEM_SIZE) / 2;
 
 const NewHome = ({ navigation }) => {
-	const renderItem = ({ item }) => {
-		const { id, title } = item;
-
-		return (
-			<View
-				style={{
-					width: ITEM_SIZE,
-					marginHorizontal: 10,
-					backgroundColor: "gray",
-					borderRadius: 10,
-					justifyContent: "center",
-					alignItems: "center",
-					elevation: 5,
-				}}
-			>
-				<Text style={styles.title}>{title}</Text>
-			</View>
-		);
-	};
-
+	
+	
 	const [columnWidth, setColumnWidth] = useState(0);
 	const [DataLoaded, setDataLoaded] = useState(true);
 
@@ -74,7 +59,7 @@ const NewHome = ({ navigation }) => {
 		client
 			.fetch(
 				`
-	*[_type == 'category']{
+	*[_type == 'category']   {
 		_id,
 		title,
 		categoriesHead[0]->{
@@ -112,9 +97,15 @@ const NewHome = ({ navigation }) => {
 			});
 	}, []);
 
+	
+
 	if (!FontLoaded) {
 		return (
-			<View>
+			<View style={{
+				flex:1,
+				justifyContent:"center",
+				alignContent:"center"
+			}}>
 				<Text>Loading</Text>
 			</View>
 		);
@@ -127,9 +118,12 @@ const NewHome = ({ navigation }) => {
 	flex:1
 }}>
 
-{DataLoaded?(  <View
+{DataLoaded?( 
+	
+	
+	<View
         style={{
-            flex:1,
+            
             justifyContent:"center",
             alignItems:"center"
         }}
@@ -137,9 +131,27 @@ const NewHome = ({ navigation }) => {
 
      
         <ActivityIndicator size="large" color="#471598" />
-        </View>):(<View className="bg-[#FAF9F6] relative  ">
+        </View>):(
+		
+// 		<View className="bg-[#FAF9F6]  ">
+// 			
+// 			<View
+		
+			
+// 			>
+			
+
+
+			// </View>
+			
+			
+		// </View>
+		
+		
+		<SafeAreaView style={{ flex: 1 }}>
 			<StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
-			<View
+<View style={{ flex: 1 }} >
+<View
 				style={{
 					display: "flex",
 					flexDirection: "row",
@@ -147,8 +159,11 @@ const NewHome = ({ navigation }) => {
 					justifyContent: "space-between",
 					marginTop: 7,
 					alignItems: "center",
+				   
 				}}
+
 			>
+			
 				<Text
 					style={{
 						fontFamily: "Nunito_800ExtraBold",
@@ -157,7 +172,7 @@ const NewHome = ({ navigation }) => {
 						color: "black",
 					}}
 				>
-					Weekly Current Affairs{" "}
+					Weekly Current Affairs
 				</Text>
 
 				<TouchableOpacity onPress={() => navigation.navigate("FeaturedFornt")}>
@@ -188,7 +203,7 @@ const NewHome = ({ navigation }) => {
 									justifyContent: "center",
 									alignItems: "center",
 									elevation: 2,
-									height: 170,
+									height: 180,
 								}}
 							>
 								<Image
@@ -208,15 +223,21 @@ const NewHome = ({ navigation }) => {
 				horizontal
 				showsHorizontalScrollIndicator={false}
 			/>
-
-			{/* <Text className="text-xl font-semibold mx-3 text-[#471598] mt-3">Quizes</Text> */}
+</View>
+<View style={{ flex: 2  }} >
+<View
+		style={{
+	
+		}}
+			
+			>{/* <Text className="text-xl font-semibold mx-3 text-[#471598] mt-3">Quizes</Text> */}
 			<View
 				style={{
 					display: "flex",
 					flexDirection: "row",
 					width: SIZES.width,
 					justifyContent: "space-between",
-					marginTop: 7,
+					
 					alignItems: "center",
 				}}
 			>
@@ -241,36 +262,47 @@ const NewHome = ({ navigation }) => {
 				</TouchableOpacity>
 			</View>
 
-			<View>
-				<FlatList
+		<View
+		style={{
+			marginBottom:71
+		}}
+		
+		
+		>
+		<FlatList
 					data={Datas}
 					numColumns={2}
+					showsVerticalScrollIndicator={false}
 					renderItem={(g) => {
 						return (
 							<View
 								style={{
 									width: columnWidth,
-									display: "flex",
+									
+									
 									justifyContent: "center",
 									alignItems: "center",
+									
 								}}
 							>
 								<TouchableOpacity
-									onPress={() =>
+									onPress={() =>{
+										
 										navigation.navigate("FrontTitle", { data: g.item.title })
+									}
 									}
 								>
 									<View
 										style={{
-											display: "flex",
-											justifyContent: "center",
-											alignItems: "center",
-											margin: 8,
-											backgroundColor: "#471598",
-											borderRadius: 8,
-											paddingVertical: 10,
-											width: SIZES.width / 2 - 20,
-										}}
+										    display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        margin: 4,
+                                        backgroundColor: "#471598",
+                                        borderRadius: 8,
+                                        paddingVertical: 10,
+                                        width: SIZES.width / 2 - 16,
+                                    }}
 									>
 										<View>
 											<Image
@@ -278,8 +310,9 @@ const NewHome = ({ navigation }) => {
 													uri: `${g.item.imageUrl}`,
 												}}
 												style={{
-													height: 70,
-													width: 70,
+													height: 85,
+													width: 85,
+													
 													borderRadius: 10,
 												}}
 											/>
@@ -296,42 +329,38 @@ const NewHome = ({ navigation }) => {
 										</Text>
 									</View>
 								</TouchableOpacity>
+								
 							</View>
 						);
 					}}
 				/>
-			</View>
-		</View>)}
-		
 		</View>
-		// </ImageBackground>
+				
+
+
+
+	
+{/* 
+{interstitialLoaded ? <Button title="Show Interstitial" onPress={() => interstitial.show()}/> : <Text>Loading Interstitial...</Text>} */}
+			</View>
+
+
+</View>
+
+</SafeAreaView>
+		
+		
+		
+		
+		
+		
+		
+		)}
+
+		</View>
+		
 	);
 };
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	contentContainer: {
-		paddingHorizontal: ITEM_SPACING,
-	},
-	itemContainer: {
-		width: ITEM_SIZE,
-		height: ITEM_SIZE,
-		borderRadius: 8,
-		marginHorizontal: ITEM_SPACING,
-		justifyContent: "center",
-		alignItems: "center",
-		backgroundColor: "#ccc",
-	},
-	activeItem: {
-		backgroundColor: "#007AFF",
-	},
-	title: {
-		color: "#fff",
-		fontSize: 32,
-		fontWeight: "bold",
-	},
-});
 
 export default NewHome;
