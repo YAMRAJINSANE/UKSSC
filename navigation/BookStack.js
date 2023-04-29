@@ -21,6 +21,7 @@ import FetauredQuizes from "../components/FetauredQuizes";
 import SubCat from "../components/SubCat";
 import Book from "../components/Book";
 import BookCat from "../components/BookCat";
+import Newspaper from "../components/Newspaper";
 
 const Stack = createStackNavigator();
 
@@ -112,6 +113,26 @@ function BookStack() {
 				}}
 				name="BookCat"
 				component={BookCat}
+			/>
+			<Stack.Screen
+
+				options={{
+                    title: "SSC Lucent Genius",
+					headerStyle: {
+						backgroundColor: "#471598",
+						elevation: 5,
+						shadowOpacity: 0.5,
+					},
+					headerTintColor: "#fff",
+					headerTitleStyle: {
+						fontWeight: "bold",
+					},
+					headerTitleAlign: "center",
+					
+				}}
+				name="newspaper"
+				component={Newspaper}
+                
 			/>
 			<Stack.Screen
 

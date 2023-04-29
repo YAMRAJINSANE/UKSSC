@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StatusBar, Image,ActivityIndicator, } from "react-native";
+import { View, Text, TouchableOpacity, StatusBar, Image,ActivityIndicator, SafeAreaView, } from "react-native";
 import { BannerAd, BannerAdSize, TestIds, InterstitialAd, AdEventType, RewardedInterstitialAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
 
 import React, { useEffect, useState } from "react";
@@ -15,14 +15,14 @@ import {
 
 const numColumns = 2
 
-const adUnitIdIn = 'ca-app-pub-8098715833653221/8702994590';
+const adUnitIdIn = "ca-app-pub-4025006836400501/9410507389";
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitIdIn, {
 	requestNonPersonalizedAdsOnly: false
   });
 
 
-  const adUnitId = 'ca-app-pub-8098715833653221/2567178692';
+  const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
 
 
 
@@ -110,6 +110,14 @@ const FrontTitle = ({ navigation, route }) => {
 		};
 	  }, [])
 
+const  hadlePress=(g)=>{
+	
+navigation.navigate("SubCat", { data: g.item.title })
+		
+	
+}
+
+
 	if (!FontLoaded) {
 		return (
 			<View>
@@ -147,104 +155,87 @@ const FrontTitle = ({ navigation, route }) => {
         <ActivityIndicator size="large" color="#471598" />
         </View>):(	
 		
-		<View
-		style={{
-			marginBottom:130
-		}}
-		
+		<SafeAreaView
+		style={{marginBottom:44}}
 		>
 
 		
-		<FlatList
-				data={FilData}
-        
-				renderItem={(g) => {
-					return (
-						<TouchableOpacity
-							onPress={() =>{
-								navigation.navigate("SubCat", { data: g.item.title })
-								interstitial.show()
-							}
-								
-							}
-						>
-								<View
-								style={{
-									width: columnWidth,
-									display: "flex",
-									justifyContent: "center",
-									alignItems: "center",
-                  
-								}}
+			
+			<FlatList
+					data={FilData}
+			
+					renderItem={(g) => {
+						return (
+							<TouchableOpacity
+							onPress={() => {
+								if (interstitialLoaded) {
+								  interstitial.show();
+								  hadlePress(g)
+								} else {
+								  console.log('Interstitial not loaded yet');
+								  hadlePress(g)
+								}
+							  }}
 							>
-								{/* <Text className="text-xl text-white font-semibold ">
-									{g.item.categoriesHead.title}
-								</Text> */}
-                	<View
-										style={{
-											display: "flex",
-											justifyContent: "center",
-											alignItems: "center",
-											margin: 8,
-											backgroundColor: "#471598",
-											borderRadius: 8,
-											paddingVertical: 10,
-											width: SIZES.width / 2 - 20,
-										}}
-									>
-										<View>
-											<Image
-
-												source={{
-													uri: `${g.item.imageUrl}`,
-												}}
-												style={{
-													height: 70,
-													width: 100,
-													borderRadius: 10,
-												}}
-											/>
-										</View>
-										<Text
+									<View
+									style={{
+										width: columnWidth,
+										display: "flex",
+										justifyContent: "center",
+										alignItems: "center",
+					  
+									}}
+								>
+									{/* <Text className="text-xl text-white font-semibold ">
+										{g.item.categoriesHead.title}
+									</Text> */}
+						<View
 											style={{
-												fontFamily: "Nunito_800ExtraBold",
-												fontSize: 15,
-												color: "white",
-												marginTop: 3,
+												display: "flex",
+												justifyContent: "center",
+												alignItems: "center",
+												margin: 8,
+												backgroundColor: "#471598",
+												borderRadius: 8,
+												paddingVertical: 10,
+												width: SIZES.width / 2 - 20,
 											}}
 										>
-											{g.item.title}
-										</Text>
-									</View>
-							</View>
-						</TouchableOpacity>
-					);
-				}}
-        numColumns={2}
-			/>
-			
-			</View>
+											<View>
+												<Image
+	
+													source={{
+														uri: `${g.item.imageUrl}`,
+													}}
+													style={{
+														height: 70,
+														width: 100,
+														borderRadius: 10,
+													}}
+												/>
+											</View>
+											<Text
+												style={{
+													fontFamily: "Nunito_800ExtraBold",
+													fontSize: 15,
+													color: "white",
+													marginTop: 3,
+												}}
+											>
+												{g.item.title}
+											</Text>
+										</View>
+								</View>
+							</TouchableOpacity>
+						);
+					}}
+			numColumns={2}
+				/>
+			</SafeAreaView>
 			
 			)}
 			
 
-<View
-style={{
-	position:"absolute",
-	bottom:0,
-	flex:1
-
-}}
-
->
-<BannerAd
-      unitId={adUnitId}
-      size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-      requestOptions={{
-        requestNonPersonalizedAdsOnly: true,
-      }}
-    />
-	</View>
 		</View>
 	);
 };

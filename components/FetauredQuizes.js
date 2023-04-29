@@ -1,19 +1,18 @@
 import { View, Text, SafeAreaView, StatusBar, Image, TouchableOpacity, Modal, Animated, ScrollView,ActivityIndicator } from 'react-native'
 import { BannerAd, BannerAdSize, TestIds, InterstitialAd, AdEventType, RewardedInterstitialAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
 import React, { useState ,useEffect} from 'react'
-import fata from "./Quiz"
+
 import {COLORS, SIZES }from "./Constant"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useFonts,Nunito_600SemiBold,Nunito_800ExtraBold} from "@expo-google-fonts/nunito"
-import * as Localization from "expo-localization"
-import {i18n} from "i18n-js"
+
 
 // import  { createClient } from '@sanity/client'
 import 'url-search-params-polyfill';
 import client from './QuestionItem';
 
+const adUnitIdIn = "ca-app-pub-4025006836400501/9410507389"
 
-const adUnitIdIn = 'ca-app-pub-8098715833653221/2030609180';
 
 
 const rewardedInterstitial = RewardedInterstitialAd.createForAdRequest(adUnitIdIn, {
@@ -130,25 +129,6 @@ const handleNext = () => {
         useNativeDriver: false
     }).start();
 }
-const restartQuiz = () => {
-    setShowScoreModal(false);
-setRightOption(null)
-    setCurrentQuestionIndex(0);
-    setScore(0);
-
-    setCurrentOptionSelected(null);
-   
-    setIsOptionsDisabled(false);
-    setShowNextButton(false);
-    rewardedInterstitial.show()
-    Animated.timing(progress, {
-        toValue: 0,
-        duration: 1000,
-        useNativeDriver: false
-    }).start();
-}
-
-
 
 const loadRewardedInterstitial = () => {
     const unsubscribeLoaded = rewardedInterstitial.addAdEventListener(
@@ -191,6 +171,53 @@ const loadRewardedInterstitial = () => {
       unsubscribeRewardedInterstitialEvents();
     };
   }, [])
+
+const restartQuiz = () => {
+
+
+    if (rewardedInterstitialLoaded == true) {
+    setShowScoreModal(false);
+    setRightOption(null)
+    setCurrentQuestionIndex(0);
+    setScore(0);
+
+
+    setCurrentOptionSelected(null);
+   
+    setIsOptionsDisabled(false);
+    setShowNextButton(false);
+    
+    rewardedInterstitial.show()
+    Animated.timing(progress, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: false
+    }).start();
+    } else {
+        console.log("not LOaded")
+        setShowScoreModal(false);
+        setRightOption(null)
+        setCurrentQuestionIndex(0);
+        setScore(0);
+        rewardedInterstitial.show()
+        setCurrentOptionSelected(null);
+       
+        setIsOptionsDisabled(false);
+        setShowNextButton(false);
+     
+        Animated.timing(progress, {
+            toValue: 0,
+            duration: 1000,
+            useNativeDriver: false
+        }).start();
+    }
+
+
+
+}
+
+
+
 
 
 

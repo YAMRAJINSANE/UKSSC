@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Image, Dimensions ,ActivityIndicator} from "react-native";
+import { View, Text, Pressable, Image, Dimensions ,ActivityIndicator, StyleSheet} from "react-native";
 import React from "react";
 import { BannerAd, BannerAdSize, TestIds, InterstitialAd, AdEventType, RewardedInterstitialAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
 
@@ -13,7 +13,7 @@ import {
 } from "@expo-google-fonts/nunito";
 
 
-const adUnitId = 'ca-app-pub-8098715833653221/2567178692';
+const adUnitId = 'ca-app-pub-4025006836400501~1725295344';
 
 
 const { width: screenWidth } = Dimensions.get("window");
@@ -83,7 +83,7 @@ style={{
 					marginTop: 10,
 				}}
 			>
-				Weekly Curent Affairs
+				Daily Curent Affairs
 			</Text>
 			{DataLoaded?( 
         <View
@@ -103,7 +103,9 @@ style={{
 		<View
 		
 		style={{
-			marginBottom:150
+			marginBottom:4,
+			flex:1,
+		
 		}}
 		
 		
@@ -129,6 +131,7 @@ style={{
 								flex: 1,
 								marginTop: 10,
 								paddingHorizontal: 10,
+								height: 180,
 							}}
 						>
 							<Image
@@ -136,23 +139,34 @@ style={{
 									uri: `${h.item.imageUrl}`,
 								}}
 								style={{
-									height: 200,
+									height: 180,
 									width: "100%",
 									borderRadius: 10,
 								}}
 							/>
 
-							<Text
+<View
 								style={{
-									fontFamily: "Nunito_800ExtraBold",
-									paddingHorizontal: 10,
-									fontSize: 16,
-									color: "white",
-									marginTop: 2,
+									...StyleSheet.absoluteFillObject,
+									alignItems: 'center',
+									justifyContent: 'center',
+									
 								}}
-							>
-								{h.item.title}
-							</Text>
+								>
+		<Text
+								style={{
+								
+									
+									
+									fontFamily: "Nunito_800ExtraBold",
+									color:"white",
+									fontSize:26
+								
+								}}
+								>{h.item.title}</Text>
+								</View>
+						
+
 						</View>
 					</Pressable>
 				);

@@ -9,7 +9,7 @@ import Home from "../components/Home";
 import FrontTitle from "../components/FrontTitle";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { Easing, Linking, StatusBar, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Easing, Linking, StatusBar, StyleSheet, Text, View } from "react-native";
 // import { Easing } from 'react-native';
 import {
 	useFonts,
@@ -50,8 +50,12 @@ function MyStack() {
 
 	if (!FontLoaded) {
 		return (
-			<View>
-				<Text>Loading</Text>
+			<View style={{
+				flex:1,
+				justifyContent:"center",
+				alignContent:"center"
+			}}>
+				<ActivityIndicator size="large" color="#471598" />
 			</View>
 		);
 	}

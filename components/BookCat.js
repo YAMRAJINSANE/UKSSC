@@ -1,5 +1,7 @@
-import { View, Text, TouchableOpacity, StatusBar, Image,  ActivityIndicator } from "react-native";
-import { BannerAd, BannerAdSize, TestIds, InterstitialAd, AdEventType, RewardedInterstitialAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
+import { View, Text, TouchableOpacity, StatusBar, Image,
+      ActivityIndicator, SafeAreaView ,	Dimensions, Pressable} from "react-native";
+import { BannerAd, BannerAdSize, TestIds, InterstitialAd, 
+    AdEventType, RewardedInterstitialAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
 
 import React, { useEffect, useState } from "react";
 import client from "./QuestionItem";
@@ -11,16 +13,20 @@ import {
 	Nunito_800ExtraBold,
 } from "@expo-google-fonts/nunito";
 
-const adUnitIdIn = 'ca-app-pub-8098715833653221/8702994590';
+const adUnitIdIn =  'ca-app-pub-4025006836400501/9330670235'
 
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitIdIn, {
 	requestNonPersonalizedAdsOnly: true
   });
 
+//   const adUnitId = "ca-app-pub-4025006836400501~1725295344";
 
-  const adUnitId = 'ca-app-pub-8098715833653221/2567178692';
 const numColumns = 2
+
+const { width: screenWidth } = Dimensions.get("window");
+const ITEM_SIZE = screenWidth * 0.8;
+
 const BookCat = ({ navigation}) => {
 	let [FontLoaded] = useFonts({
 		Nunito_600SemiBold,
@@ -52,6 +58,7 @@ const BookCat = ({ navigation}) => {
 			)
 			.then((res) => {
 				setDatas(res);
+                console.log(res)
                 setDataLoaded(false)
 			
 			});
@@ -93,30 +100,40 @@ const BookCat = ({ navigation}) => {
 		};
 	  }, [])
 
+      const hadlePress = (g)=>{
+        navigation.navigate("BookStack", { data: g.item.title })
+
+      }
+      const hadlePressNews = (g)=>{
+        navigation.navigate("newspaper")
+      }
 
 	if (!FontLoaded) {
 		return (
-			<View>
-				<Text>Loading</Text>
+            <View
+            style={{
+                flex:1,
+                justifyContent:"center",
+                alignItems:"center"
+            }}
+            >
+				   <ActivityIndicator size="large" color="#471598" />
 			</View>
 		);
 	}
 
 	return (
-		<View className="bg-[#fff] relative  flex-1">
+		<SafeAreaView
+        
+        style={{
+            flex:1
+        }}
+        >
 			<StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
 
-			<Text
-				style={{
-					fontFamily: "Nunito_800ExtraBold",
-					fontSize: 20,
-					marginLeft: 10,
-					marginTop: 10,
-					color: "black",
-				}}
-			>
-			Study Material
-			</Text>
+          
+
+			
             {DataLoaded?( 
         <View
         style={{
@@ -133,24 +150,97 @@ const BookCat = ({ navigation}) => {
         
         ):(	
         
-            <View
-            style={{
-                marginBottom:150
-            }}
-            
+            <SafeAreaView
+            style={{ flex: 1 }}
             >
-        <FlatList
-            data={Datas}
+<Text
+				style={{
+					fontFamily: "Nunito_800ExtraBold",
+					fontSize: 20,
+					marginLeft: 10,
+					marginTop: 10,
+					color: "black",
+				}}
+			>
+			Newspapers
+			</Text>
+
+
+<Pressable
+						      onPress={() =>{
+                            
+                                if (interstitialLoaded == true) {
+                                hadlePressNews()
+                                interstitial.show()
+                                } else {
+                                    hadlePress()
+                                    console.log("Noy")
     
+                                }
+                            }
+                            }
+                              
+						>
+							<View
+								style={{
+									width: SIZES.width-20,
+									marginHorizontal: 10,
+									borderRadius: 10,
+									justifyContent: "center",
+									alignItems: "center",
+								elevation:4,
+									height:200,
+                                    marginTop:10
+								}}
+							>
+								<Image
+									source={require("../assets/news.jpg")}
+
+
+									style={{
+										height: "100%",
+										width: "100%",
+                                        
+										borderRadius: 10,
+									}}
+								/>
+								
+						
+							</View>
+						</Pressable>
+
+                        <Text
+				style={{
+					fontFamily: "Nunito_800ExtraBold",
+					fontSize: 20,
+					marginLeft: 10,
+					marginTop: 10,
+					color: "black",
+				}}
+			>
+			Study Material
+			</Text>
+            <View style={{ flex: 2  }} >
+            <FlatList
+            data={Datas}
+    showsVerticalScrollIndicator={false}
             renderItem={(g) => {
                 return (
                     <TouchableOpacity
                         onPress={() =>{
-                            navigation.navigate("BookStack", { data: g.item.title })
+                            
+                            if (interstitialLoaded == true) {
+							hadlePress(g)
                             interstitial.show()
+							} else {
+                                hadlePress(g)
+                                console.log("Noy")
+
+							}
+						}
                         }
                           
-                        }
+                      
                     >
                             <View
                             style={{
@@ -209,31 +299,17 @@ const BookCat = ({ navigation}) => {
             }}
     numColumns={2}
         />
+                </View> 
+                 
        
         
-        </View>
+        </SafeAreaView>
         
         )}
 
-<View
-style={{
-	position:"absolute",
-	bottom:0,
-	flex:1
 
-}}
-
->
-<BannerAd
-      unitId={adUnitId}
-      size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-      requestOptions={{
-        requestNonPersonalizedAdsOnly: true,
-      }}
-    />
-	</View>
 		
-		</View>
+		</SafeAreaView>
 	);
 };
 

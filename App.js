@@ -1,7 +1,6 @@
 import Home from "./components/Home";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from "@react-navigation/native";
-import Setting from "./components/Setting";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import NewHome from "./components/NewHome";
 import MyStack from "./navigation/StackNav";

@@ -9,8 +9,8 @@ import {useFonts,Nunito_600SemiBold,Nunito_800ExtraBold} from "@expo-google-font
 
 import 'url-search-params-polyfill';
 import client from './QuestionItem';
+const adUnitIdIn= __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
 
-const adUnitIdIn = 'ca-app-pub-8098715833653221/2030609180';
 
 const rewardedInterstitial = RewardedInterstitialAd.createForAdRequest( adUnitIdIn , {
     requestNonPersonalizedAdsOnly: true
@@ -127,23 +127,7 @@ const handleNext = () => {
         useNativeDriver: false
     }).start();
 }
-const restartQuiz = () => {
-    setShowScoreModal(false);
-setRightOption(null)
-    setCurrentQuestionIndex(0);
-    setScore(0);
 
-    setCurrentOptionSelected(null);
-   
-    setIsOptionsDisabled(false);
-    setShowNextButton(false);
-    rewardedInterstitial.show()
-    Animated.timing(progress, {
-        toValue: 0,
-        duration: 1000,
-        useNativeDriver: false
-    }).start();
-}
 
 
 
@@ -178,6 +162,49 @@ const loadRewardedInterstitial = () => {
       unsubscribeEarned();
     }
   };
+
+  const restartQuiz = () => {
+
+
+    if (rewardedInterstitialLoaded == true) {
+    setShowScoreModal(false);
+    setRightOption(null)
+    setCurrentQuestionIndex(0);
+    setScore(0);
+
+    setCurrentOptionSelected(null);
+   
+    setIsOptionsDisabled(false);
+    setShowNextButton(false);
+    rewardedInterstitial.show()
+    Animated.timing(progress, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: false
+    }).start();
+    } else {
+        console.log("not LOaded")
+        setShowScoreModal(false);
+        setRightOption(null)
+        setCurrentQuestionIndex(0);
+        setScore(0);
+    
+        setCurrentOptionSelected(null);
+       
+        setIsOptionsDisabled(false);
+        setShowNextButton(false);
+     
+        Animated.timing(progress, {
+            toValue: 0,
+            duration: 1000,
+            useNativeDriver: false
+        }).start();
+    }
+
+
+
+}
+
 
   useEffect(() => {
     

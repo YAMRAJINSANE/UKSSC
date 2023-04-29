@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StatusBar, Image,ActivityIndicator } from "react-native";
+import { View, Text, TouchableOpacity, StatusBar, Image,ActivityIndicator, SafeAreaView } from "react-native";
 import React, { useEffect, useState } from "react";
 import client from "./QuestionItem";
 import { FlatList } from "react-native";
@@ -8,6 +8,9 @@ import {
 	Nunito_600SemiBold,
 	Nunito_800ExtraBold,
 } from "@expo-google-fonts/nunito";
+
+const numColumns = 2
+
 
 const SubCat = ({ navigation, route }) => {
 	let [FontLoaded] = useFonts({
@@ -19,9 +22,14 @@ const SubCat = ({ navigation, route }) => {
 
 
 	const [DataLoaded, setDataLoaded] = useState(true);
+	const [columnWidth, setColumnWidth] = useState(0);
 
 
 	const [Datas, setDatas] = useState([]);
+
+	useEffect(() => {
+		setColumnWidth(SIZES.width / numColumns);
+	}, []);
 
 	useEffect(() => {
 		client
@@ -61,7 +69,7 @@ const SubCat = ({ navigation, route }) => {
 	}
 
 	return (
-		<View className="bg-[#1F1047] relative  flex-1">
+		<SafeAreaView className="bg-[#1F1047] flex-1">
 			<StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
 
 			<Text
@@ -87,37 +95,58 @@ const SubCat = ({ navigation, route }) => {
      
         <ActivityIndicator size="large" color="#471598" />
         </View>):(
+
+			<SafeAreaView
+			style={{flex:1}}
+			>
+
+		<View
+		
+		style={{flex:1}}
+		>
+			
 	<FlatList
 	data={FilData}
-
-	renderItem={(g) => {
+    renderItem={(g) => {
 		return (
+			<>
+	
 			<TouchableOpacity
 				onPress={() =>
 					navigation.navigate("Front", { data: g.item.title })
 				}
 			>
-				<View className="mt-3 h-[110px] mx-3  bg-[#6849FA] rounded-md flex justify-center items-center">
+					<View
+								style={{
+									width: columnWidth,
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+                  
+								}}
+							>
 					{/* <Text className="text-xl text-white font-semibold ">
 						{g.item.categoriesHead.title}
 					</Text> */}
 		<View
-							style={{
-								display: "flex",
-								justifyContent: "center",
-								alignItems: "center",
-								margin: 8,
-								
-								borderRadius: 8,
-								paddingVertical: 10,
-								// width: SIZES.width / 2 - 20,
-							}}
-						>
+										style={{
+											display: "flex",
+											justifyContent: "center",
+											alignItems: "center",
+											margin: 8,
+											padding:8,
+											backgroundColor: "#471598",
+											borderRadius: 8,
+											paddingVertical: 10,
+											width: SIZES.width / 2 - 20,
+											height:100
+										}}
+									>
 							
 							<Text
 								style={{
 									fontFamily: "Nunito_800ExtraBold",
-									fontSize: 20,
+									fontSize: 16,
 									color: "white",
 									marginTop: 3,
 								}}
@@ -127,15 +156,21 @@ const SubCat = ({ navigation, route }) => {
 						</View>
 				</View>
 			</TouchableOpacity>
+			
+			
+			</>
 		);
 	}}
-
+numColumns={2}
 />
+
+</View>	
+</SafeAreaView>
 
 		)}
 
 		
-		</View>
+		</SafeAreaView>
 	);
 };
 

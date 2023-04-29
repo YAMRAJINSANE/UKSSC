@@ -72,7 +72,7 @@ const NewHome = ({ navigation }) => {
   `
 			)
 			.then((res) => {
-				setDatas(res);
+				setDatas(res.slice(0,6));
 		
 
 				setDataLoaded(false);
@@ -159,6 +159,7 @@ const NewHome = ({ navigation }) => {
 					justifyContent: "space-between",
 					marginTop: 7,
 					alignItems: "center",
+					
 				   
 				}}
 
@@ -172,7 +173,7 @@ const NewHome = ({ navigation }) => {
 						color: "black",
 					}}
 				>
-					Weekly Current Affairs
+					Current Affair Quiz
 				</Text>
 
 				<TouchableOpacity onPress={() => navigation.navigate("FeaturedFornt")}>
@@ -202,7 +203,8 @@ const NewHome = ({ navigation }) => {
 									borderRadius: 10,
 									justifyContent: "center",
 									alignItems: "center",
-									elevation: 2,
+									position:"relative",
+									
 									height: 180,
 								}}
 							>
@@ -216,6 +218,27 @@ const NewHome = ({ navigation }) => {
 										borderRadius: 10,
 									}}
 								/>
+								<View
+								style={{
+									...StyleSheet.absoluteFillObject,
+									alignItems: 'center',
+									justifyContent: 'center',
+									
+								}}
+								>
+		<Text
+								style={{
+								
+									
+									
+									fontFamily: "Nunito_800ExtraBold",
+									color:"white",
+									fontSize:26
+								
+								}}
+								>{h.item.title}</Text>
+								</View>
+						
 							</View>
 						</Pressable>
 					);

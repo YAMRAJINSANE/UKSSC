@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StatusBar, Image,Linking,ActivityIndicator } from "react-native";
+import { View, Text, TouchableOpacity, StatusBar, Image,Linking,ActivityIndicator, SafeAreaView } from "react-native";
 import React, { useEffect, useState } from "react";
 import client from "./QuestionItem";
 import { FlatList } from "react-native";
@@ -11,7 +11,7 @@ import {
 
 
 const numColumns = 2
-const Book = ({ navigation, route }) => {
+const Book = ({  route }) => {
 	let [FontLoaded] = useFonts({
 		Nunito_600SemiBold,
 		Nunito_800ExtraBold,
@@ -67,7 +67,7 @@ const Book = ({ navigation, route }) => {
 	}
 
 	return (
-		<View className="bg-[#1F1047] relative  flex-1">
+		<SafeAreaView className="bg-[#1F1047] relative  flex-1">
 			<StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
 
 			<Text
@@ -95,9 +95,25 @@ const Book = ({ navigation, route }) => {
         </View>
         
         
-        ):(	<FlatList
+        ):(	
+        	<View
+		
+		style={{
+			marginBottom:4,
+			flex:1,
+           
+		
+		}}
+		
+		
+		>
+
+     
+        
+        <FlatList
             data={FilData}
             keyExtractor={(item)=>item.id}
+            showsVerticalScrollIndicator={false}
             renderItem={(g) => {
                 return (
                     <TouchableOpacity
@@ -156,9 +172,12 @@ const Book = ({ navigation, route }) => {
                 );
             }}
     numColumns={2}
-        />)}
+        />
+           </View>
+        
+        )}
 		
-		</View>
+		</SafeAreaView>
 	);
 };
 
