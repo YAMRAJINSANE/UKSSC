@@ -13,11 +13,13 @@ import {
 	Nunito_800ExtraBold,
 } from "@expo-google-fonts/nunito";
 
-const adUnitIdIn =  'ca-app-pub-4025006836400501/9330670235'
+const adUnitIdIn = 'ca-app-pub-8098715833653221/8702994590';
+
 
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitIdIn, {
-	requestNonPersonalizedAdsOnly: true
+	requestNonPersonalizedAdsOnly: true,
+    keywords: ['fashion', 'clothing'],
   });
 
 //   const adUnitId = "ca-app-pub-4025006836400501~1725295344";
@@ -58,7 +60,7 @@ const BookCat = ({ navigation}) => {
 			)
 			.then((res) => {
 				setDatas(res);
-                console.log(res)
+                
                 setDataLoaded(false)
 			
 			});
@@ -104,9 +106,9 @@ const BookCat = ({ navigation}) => {
         navigation.navigate("BookStack", { data: g.item.title })
 
       }
-      const hadlePressNews = (g)=>{
-        navigation.navigate("newspaper")
-      }
+    //   const hadlePressNews = ()=>{
+        
+    //   }
 
 	if (!FontLoaded) {
 		return (
@@ -168,15 +170,17 @@ const BookCat = ({ navigation}) => {
 
 <Pressable
 						      onPress={() =>{
-                            
-                                if (interstitialLoaded == true) {
-                                hadlePressNews()
-                                interstitial.show()
-                                } else {
-                                    hadlePress()
-                                    console.log("Noy")
-    
-                                }
+                                interstitialLoaded ? (
+                                    navigation.navigate("newspaper"),
+                                    interstitial.show()
+
+                                ):(
+                                    navigation.navigate("newspaper")
+                               
+
+
+                                )
+                                
                             }
                             }
                               
@@ -229,14 +233,24 @@ const BookCat = ({ navigation}) => {
                     <TouchableOpacity
                         onPress={() =>{
                             
-                            if (interstitialLoaded == true) {
-							hadlePress(g)
-                            interstitial.show()
-							} else {
-                                hadlePress(g)
-                                console.log("Noy")
+                            interstitialLoaded ? (
+                                navigation.navigate("BookStack", { data: g.item.title }),
 
-							}
+                                interstitial.show()
+
+                            ):(
+                                navigation.navigate("BookStack", { data: g.item.title })
+                                
+
+                            )
+                            // if (interstitialLoaded == true) {
+							// hadlePress(g)
+                            // interstitial.show()
+							// } else {
+                            //     hadlePress(g)
+                            //     console.log("Noy")
+
+							// }
 						}
                         }
                           

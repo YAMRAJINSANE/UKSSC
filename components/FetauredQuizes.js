@@ -11,7 +11,7 @@ import {useFonts,Nunito_600SemiBold,Nunito_800ExtraBold} from "@expo-google-font
 import 'url-search-params-polyfill';
 import client from './QuestionItem';
 
-const adUnitIdIn = "ca-app-pub-4025006836400501/9410507389"
+const adUnitIdIn = "ca-app-pub-8098715833653221/2030609180"
 
 
 
@@ -194,12 +194,12 @@ const restartQuiz = () => {
         useNativeDriver: false
     }).start();
     } else {
-        console.log("not LOaded")
+        
         setShowScoreModal(false);
         setRightOption(null)
         setCurrentQuestionIndex(0);
         setScore(0);
-        rewardedInterstitial.show()
+        
         setCurrentOptionSelected(null);
        
         setIsOptionsDisabled(false);

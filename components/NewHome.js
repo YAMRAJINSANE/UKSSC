@@ -233,7 +233,7 @@ const NewHome = ({ navigation }) => {
 									
 									fontFamily: "Nunito_800ExtraBold",
 									color:"white",
-									fontSize:26
+									fontSize:20
 								
 								}}
 								>{h.item.title}</Text>

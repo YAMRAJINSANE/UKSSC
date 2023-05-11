@@ -9,7 +9,7 @@ import {useFonts,Nunito_600SemiBold,Nunito_800ExtraBold} from "@expo-google-font
 
 import 'url-search-params-polyfill';
 import client from './QuestionItem';
-const adUnitIdIn= __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+const adUnitIdIn= "ca-app-pub-8098715833653221/2030609180"
 
 
 const rewardedInterstitial = RewardedInterstitialAd.createForAdRequest( adUnitIdIn , {
@@ -183,7 +183,7 @@ const loadRewardedInterstitial = () => {
         useNativeDriver: false
     }).start();
     } else {
-        console.log("not LOaded")
+        
         setShowScoreModal(false);
         setRightOption(null)
         setCurrentQuestionIndex(0);

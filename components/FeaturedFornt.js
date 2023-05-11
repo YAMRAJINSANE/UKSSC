@@ -57,23 +57,7 @@ const FeaturedFornt = ({ navigation }) => {
 	return (
 		<View style={{ flex: 1,backgroundColor:"#1F1047" }}>
 
-<View
-style={{
-	position:"absolute",
-	bottom:0,
-	flex:1
 
-}}
-
->
-<BannerAd
-      unitId={adUnitId}
-      size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-      requestOptions={{
-        requestNonPersonalizedAdsOnly: true,
-      }}
-    />
-	</View>
 			<Text
 				style={{
 					fontFamily: "Nunito_800ExtraBold",
@@ -83,7 +67,8 @@ style={{
 					marginTop: 10,
 				}}
 			>
-				Daily Curent Affairs
+									Current Affair Quiz
+
 			</Text>
 			{DataLoaded?( 
         <View
@@ -105,6 +90,7 @@ style={{
 		style={{
 			marginBottom:4,
 			flex:1,
+			
 		
 		}}
 		
@@ -131,7 +117,7 @@ style={{
 								flex: 1,
 								marginTop: 10,
 								paddingHorizontal: 10,
-								height: 180,
+								height: 200,
 							}}
 						>
 							<Image
@@ -139,7 +125,7 @@ style={{
 									uri: `${h.item.imageUrl}`,
 								}}
 								style={{
-									height: 180,
+									height: 200,
 									width: "100%",
 									borderRadius: 10,
 								}}
@@ -160,7 +146,7 @@ style={{
 									
 									fontFamily: "Nunito_800ExtraBold",
 									color:"white",
-									fontSize:26
+									fontSize:23
 								
 								}}
 								>{h.item.title}</Text>

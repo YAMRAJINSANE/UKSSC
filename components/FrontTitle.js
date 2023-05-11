@@ -15,7 +15,7 @@ import {
 
 const numColumns = 2
 
-const adUnitIdIn = "ca-app-pub-4025006836400501/9410507389";
+const adUnitIdIn = "ca-app-pub-8098715833653221/8702994590";
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitIdIn, {
 	requestNonPersonalizedAdsOnly: false
@@ -112,7 +112,7 @@ const FrontTitle = ({ navigation, route }) => {
 
 const  hadlePress=(g)=>{
 	
-navigation.navigate("SubCat", { data: g.item.title })
+
 		
 	
 }
@@ -168,13 +168,24 @@ navigation.navigate("SubCat", { data: g.item.title })
 						return (
 							<TouchableOpacity
 							onPress={() => {
-								if (interstitialLoaded) {
-								  interstitial.show();
-								  hadlePress(g)
-								} else {
-								  console.log('Interstitial not loaded yet');
-								  hadlePress(g)
-								}
+
+								interstitialLoaded ? (
+                                    navigation.navigate("SubCat", { data: g.item.title }),
+                                    interstitial.show()
+
+                                ):(
+                                    navigation.navigate("SubCat", { data: g.item.title })
+
+                                )
+
+
+								// if (interstitialLoaded) {
+								//   interstitial.show();
+								//   hadlePress(g)
+								// } else {
+								//   console.log('Interstitial not loaded yet');
+								//   hadlePress(g)
+								// }
 							  }}
 							>
 									<View

@@ -62,7 +62,7 @@ const Newspaper = ({ navigation, route }) => {
 				setDatas(res);
 				
 				setDataLoaded(false)
-			console.log(res)
+		
 			});
 	}, []);
 
