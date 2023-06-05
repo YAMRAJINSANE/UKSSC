@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "SSC Lucent Genius",
+    "name": "UKSSC PYQ",
     "slug": "ukssc",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -36,6 +36,6 @@
     "owner": "ritikap"
   },
   "react-native-google-mobile-ads": {
-    "android_app_id": "ca-app-pub-8098715833653221~7426637602"
+    "android_app_id": "ca-app-pub-8098715833653221~7426637999"
   }
 }

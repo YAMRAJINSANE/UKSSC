@@ -1,481 +1,322 @@
-import { View, Text, SafeAreaView, StatusBar, Image, TouchableOpacity, Modal, Animated, ScrollView,ActivityIndicator } from 'react-native'
-import { BannerAd, BannerAdSize, TestIds, InterstitialAd, AdEventType, RewardedInterstitialAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
-
-import React, { useState ,useEffect} from 'react'
-import {COLORS, SIZES }from "./Constant"
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {useFonts,Nunito_600SemiBold,Nunito_800ExtraBold} from "@expo-google-fonts/nunito"
-
-
-import 'url-search-params-polyfill';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity, Dimensions, Animated, Modal } from 'react-native';
+import { SIZES } from './Constant';
 import client from './QuestionItem';
-const adUnitIdIn= "ca-app-pub-8098715833653221/2030609180"
+import QuesScreen from '../Helper/QuesScreen';
+import {
+	useFonts,
+	Nunito_600SemiBold,
+	Nunito_800ExtraBold,
+} from "@expo-google-fonts/nunito";
+const { height, width } = Dimensions.get('window');
 
+const Home = ({ route }) => {
+  const { data } = route.params;
 
-const rewardedInterstitial = RewardedInterstitialAd.createForAdRequest( adUnitIdIn , {
-    requestNonPersonalizedAdsOnly: true
-  });
-  
-
-
-const Home = ({route}) => {
-
-    const {data} = route.params;
-    let [FontLoaded] = useFonts({
-        Nunito_600SemiBold,
-        Nunito_800ExtraBold
-    })
-
-  const params = new URLSearchParams();
-  params.set('key', 'value');
-
-
-  const [rewardedInterstitialLoaded, setRewardedInterstitialLoaded] = useState(false);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [currentOptionSelected, setCurrentOptionSelected] = useState(null);
-
-  const [isOptionsDisabled, setIsOptionsDisabled] = useState(false);
-  const [score, setScore] = useState(0)
-  
-  const [RightOption, setRightOption] = useState(null)
-  const [showNextButton, setShowNextButton] = useState(false)
-  const [showScoreModal, setShowScoreModal] = useState(false)
+  let [FontLoaded] = useFonts({
+		Nunito_600SemiBold,
+		Nunito_800ExtraBold,
+	});
+  // const [currentIndex, setCurrentIndex] = useState(1);
+  const [questions, setQuestions] = useState([]);
+  // const listRef = useRef(null);
+  // const [modalVisible, setModalVisible] = useState(false);
   const [datax, setData] = useState([]);
-  const [DataLoaded, setDataLoaded] = useState(true);
-  const [QuesFetched, setQuesFetched] = useState([]);
+  const [dataLoaded, setDataLoaded] = useState(true);
+  const [quesFetched, setQuesFetched] = useState([]);
+  const [lastIndex, setlastIndex] = useState([]);
 
 
 
+  console.log("Currnet Index",currentIndex)
+  console.log("last Index",lastIndex)
 
-
-
-useEffect(() => {
-  
-    client.fetch(`
-    *[_type == 'exam']{
-      _id,
-      title,
-      questions,
-      categories[0]->{
-        title
+  useEffect(() => {
+    client
+      .fetch(`
+        *[_type == 'exam']{
+          _id,
+          title,
+          questions,
+          categories[0]->{
+            title
+          }
         }
-    }
-  `).then((Geted)=>{
-    setDataLoaded(false)
-   setData(Geted)
-    const filteredData = Geted.filter((item) => item.title == data);
-    
-    
-    const [{questions}] = filteredData
-    setQuesFetched(questions)
-   
-  });
-}, []);
+      `)
+      .then((Geted) => {
+        setDataLoaded(false);
+        setData(Geted);
+        const filteredData = Geted.filter((item) => item.title === data);
+        const [{ questions }] = filteredData;
+        setQuesFetched(questions);
+        setlastIndex(questions.length)
+      });
+  }, []);
 
-const allQuestions = QuesFetched;
+  const allQuestions = quesFetched;
 
 
 
-const validateAnswer = (selectedOption) => {
+  const [currentIndex, setCurrentIndex] = useState(1);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState(Array(allQuestions.length).fill(''));
 
+  const listRef = useRef(null);
 
-    // console.log(selectedOption,"Selected OP")
-    
-   
-    setCurrentOptionSelected(selectedOption);
+  const onSelectOption = (index, option) => {
+    const updatedOptions = [...selectedOptions];
+    updatedOptions[index] = option;
+    setSelectedOptions(updatedOptions);
+  };
 
-   
-
-    setIsOptionsDisabled(true);
-    const isOptionCorrect = selectedOption === allQuestions[currentQuestionIndex]?.correct;
-    // update score if option is correct
-    if (isOptionCorrect) {
-     setScore(score+1)
-    }
-  
-    // set right option for the current question
-    setRightOption(allQuestions[currentQuestionIndex]?.correct);
-  
-    setShowNextButton(true)
-}
-
-const ScoreUpdate = (option)=>{
-    if(option == RightOption){
-        setScore(score + 1)
-        
-    }
-}
-
-
-
-const handleNext = () => {
-    if(currentQuestionIndex== allQuestions.length-1){
-        // Last Question
-        // Show Score Modal
-        setShowScoreModal(true)
-    }else{
-        setCurrentQuestionIndex(currentQuestionIndex+1);
-        setCurrentOptionSelected(null);
-       
-        setRightOption(null)
-        setIsOptionsDisabled(false);
-        setShowNextButton(false);
-    }
-    Animated.timing(progress, {
-        toValue: currentQuestionIndex+1,
-        duration: 1000,
-        useNativeDriver: false
-    }).start();
-}
-
-
-
-
-const loadRewardedInterstitial = () => {
-    const unsubscribeLoaded = rewardedInterstitial.addAdEventListener(
-      RewardedAdEventType.LOADED,
-      () => {
-        setRewardedInterstitialLoaded(true);
+  const calculateScore = () => {
+    let score = 0;
+    allQuestions.forEach((question, index) => {
+      if (question.correct === selectedOptions[index]) {
+        score += 2;
+      } else {
+        score -= 0.25;
       }
-    );
+    });
+    return score.toFixed(2);
+  };
 
-    const unsubscribeEarned = rewardedInterstitial.addAdEventListener(
-      RewardedAdEventType.EARNED_REWARD,
-      reward => {
-        // console.log(`User earned reward of ${reward.amount} ${reward.type}`);
-      }
-    );
-
-    const unsubscribeClosed = rewardedInterstitial.addAdEventListener(
-      AdEventType.CLOSED,
-      () => {
-        setRewardedInterstitialLoaded(false);
-        rewardedInterstitial.load();
-      }
-    );
-
-    rewardedInterstitial.load();
-
-    return () => {
-      unsubscribeLoaded();
-      unsubscribeClosed();
-      unsubscribeEarned();
+  const getTextScore = () => {
+    const score = calculateScore();
+    if (score >= 0) {
+      return `+${score}`;
+    } else {
+      return score;
     }
   };
 
-  const restartQuiz = () => {
-
-
-    if (rewardedInterstitialLoaded == true) {
-    setShowScoreModal(false);
-    setRightOption(null)
-    setCurrentQuestionIndex(0);
-    setScore(0);
-
-    setCurrentOptionSelected(null);
-   
-    setIsOptionsDisabled(false);
-    setShowNextButton(false);
-    rewardedInterstitial.show()
-    Animated.timing(progress, {
-        toValue: 0,
-        duration: 1000,
-        useNativeDriver: false
-    }).start();
-    } else {
-        
-        setShowScoreModal(false);
-        setRightOption(null)
-        setCurrentQuestionIndex(0);
-        setScore(0);
-    
-        setCurrentOptionSelected(null);
-       
-        setIsOptionsDisabled(false);
-        setShowNextButton(false);
-     
-        Animated.timing(progress, {
-            toValue: 0,
-            duration: 1000,
-            useNativeDriver: false
-        }).start();
-    }
-
-
-
-}
-
-
-  useEffect(() => {
-    
-    const unsubscribeRewardedInterstitialEvents = loadRewardedInterstitial();
-
-    return () => {
-     
-      unsubscribeRewardedInterstitialEvents();
-    };
-  }, [])
-
-const renderQuestion = () => {
-  return (
-      <View style={{
-          marginVertical: 20
-      }}>
-          {/* Question Counter */}
-          <View style={{
-              flexDirection: 'row',
-              alignItems: 'flex-end'
-          }}>
-              <Text style={{color: COLORS.white, fontSize: 20, opacity: 0.6, marginRight: 2}}>{currentQuestionIndex+1}</Text>
-              <Text style={{color: COLORS.white, fontSize: 18, opacity: 0.6}}>/ {allQuestions.length}</Text>
-          </View>
-
-          {/* Question */}
-          <Text style={{
-              color: COLORS.white,
-              fontFamily:"Nunito_800ExtraBold",
-              fontSize: 19
-          }}>Ques. {allQuestions[currentQuestionIndex]?.question}</Text>
-      </View>
-  )
-}
-const renderOptions = () => {
-  return (
-      <View>
-
-          {
-
-              allQuestions[currentQuestionIndex]?.options.map((option,optionIndex) => (
-                  <TouchableOpacity 
-                  onPress={()=>{ 
-                    validateAnswer(option,optionIndex)
-                    ScoreUpdate(option)
-                setRightOption( allQuestions[currentQuestionIndex]?.correct)
-                }}
-                  disabled={isOptionsDisabled}
-                  key={option}
-                  style={{
-                      borderWidth: 3, 
-                      borderColor: option==RightOption 
-                      ? COLORS.success
-                      : option==currentOptionSelected 
-                      ? COLORS.error 
-                      : COLORS.secondary+'40',
-                      backgroundColor: option==RightOption 
-                      ? COLORS.success +'20'
-                      : option==currentOptionSelected 
-                      ? COLORS.error +'20'
-                      : COLORS.secondary+'20',
-                      height: 60, borderRadius: 20,
-                      flexDirection: 'row',
-                      alignItems: 'center', justifyContent: 'space-between',
-                      paddingHorizontal: 20,
-                      marginVertical: 10
-                  }}
-                  >
-                      <Text style={{fontSize: 17, color: COLORS.white,fontFamily:"Nunito_800ExtraBold"}}>{option}</Text>
-
-                      {/* Show Check Or Cross Icon based on correct answer*/}
-                      {
-                          option==RightOption ? (
-                              <View style={{
-                                  width: 30, height: 30, borderRadius: 30/2,
-                                  backgroundColor: COLORS.success,
-                                  justifyContent: 'center', alignItems: 'center'
-                              }}>
-                                  <MaterialCommunityIcons name="check" style={{
-                                      color: COLORS.white,
-                                      fontSize: 20
-                                  }} />
-                              </View>
-                          ): option == currentOptionSelected ? (
-                              <View style={{
-                                  width: 30, height: 30, borderRadius: 30/2,
-                                  backgroundColor: COLORS.error,
-                                  justifyContent: 'center', alignItems: 'center'
-                              }}>
-                                  <MaterialCommunityIcons name="close" style={{
-                                      color: COLORS.white,
-                                      fontSize: 20
-                                  }} />
-                              </View>
-                          ) : null
-                      }
-
-                  </TouchableOpacity>
-              ))
-          }
-      </View>
-  )
-}
-const renderNextButton = () => {
-  if(showNextButton){
-      return (
-          <TouchableOpacity
-          onPress={handleNext}
-          style={{
-              marginTop: 20, width: '100%', backgroundColor: COLORS.accent, padding: 20, borderRadius: 5
-          }}>
-              <Text style={{fontSize: 20, color: COLORS.white, textAlign: 'center'}}>Next</Text>
-          </TouchableOpacity>
-      )
-  }else{
-      return null
-  }
-}
-
-
-const [progress, setProgress] = useState(new Animated.Value(0));
-const progressAnim = progress.interpolate({
-  inputRange: [0, allQuestions.length],
-  outputRange: ['0%','100%']
-})
-const renderProgressBar = () => {
-  return (
-      <View style={{
-          width: '100%',
-          height: 20,
-          borderRadius: 20,
-          backgroundColor: '#00000020',
-
-      }}>
-          <Animated.View style={[{
-              height: 20,
-              borderRadius: 20,
-              backgroundColor: COLORS.accent
-          },{
-              width: progressAnim
-          }]}>
-
-          </Animated.View>
-
-      </View>
-  )
-}
-
-
-if(!FontLoaded){
-	return(
-		<View>
-			<Text>Loading</Text>
-		</View>
-	)
-}
-
-
-return (
- <SafeAreaView style={{
-     flex: 1
- }}>
-     <StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
-
-     {DataLoaded?( 
-        <View
+  const renderOptions = ({ item, index }) => {
+    return item.options.map((option) => (
+      <TouchableOpacity
+        key={option}
         style={{
-            flex:1,
-            justifyContent:"center",
-            alignItems:"center",
-            backgroundColor:"#1F1047"
+          width: '90%',
+                  height: 60,
+                  elevation: 3,
+          backgroundColor: selectedOptions[index] === option ? 'purple' : '#fff',
+          marginTop: 10,
+          marginBottom: 10,
+          alignSelf: 'center',
+          alignItems: 'center',
+          paddingLeft: 5,
+          flexDirection: 'row',
+          borderRadius:20,
+          // borderWidth:2,
+          // borderColor:"gray"
+        }}
+        onPress={() => onSelectOption(index, option)}
+      >
+        <Text
+        style={{
+          fontSize: 18, fontWeight: '600', marginLeft: 20,color:selectedOptions[index] === option ? 'white' : 'black',  fontFamily:"Nunito_800ExtraBold"
         }}
         >
+          
+          
+          {option}</Text>
+      </TouchableOpacity>
+    ));
+  };
 
-     
-        <ActivityIndicator size="large" color="#471598" />
+  if (!FontLoaded) {
+		return (
+			<View style={{
+				flex:1,
+				justifyContent:"center",
+				alignContent:"center"
+			}}>
+				<Text>Loading</Text>
+			</View>
+		);
+	}
+
+
+  return (
+    <View style={{ flex: 1 }}>
+      {/* Upper Section */}
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 }}>
+        <View style={{ justifyContent: 'space-between', width: width, marginHorizontal: 10 }}>
+          <Text style={{ fontSize: 20, fontWeight: '600', marginLeft: 20, color: '#000' }}>
+            {data}: {currentIndex}/{allQuestions.length}
+          </Text>
         </View>
-        
-        
-        ):(
- <View style={{
-    flex: 1,
-    paddingVertical: 5,
-    paddingHorizontal: 16,
-    backgroundColor: COLORS.background,
-    position:'relative'
-}}>
-<View>
-<Text style={{fontWeight:"bold",fontSize:15,color:"white"}}>{data}</Text>
-</View>
-<ScrollView
-showsVerticalScrollIndicator={false}
-style={{
-    marginBottom:15
+        <Text
+          style={{ marginRight: 20, fontSize: 20, fontWeight: '600', color: 'black' }}
+          onPress={() => {
+            reset();
+            listRef.current.scrollToIndex({ animated: true, index: 0 });
+          }}
+        >
+          Reset
+        </Text>
+      </View>
+
+      <View style={{ marginTop: 30 }}>
+        <FlatList
+          ref={listRef}
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled
+          horizontal
+          onScroll={(e) => {
+            const x = e.nativeEvent.contentOffset.x / width + 1;
+            setCurrentIndex(x.toFixed(0));
+          }}
+          data={allQuestions}
+          renderItem={({ item, index }) => {
+            return (
+              <View style={{width: width}}>
+                  <Text
+        style={{
+          fontSize: 20,
+          fontWeight: '600',
+          color: 'black',
+          marginLeft: 20,
+          marginRight: 20,
+          fontFamily:"Nunito_800ExtraBold"
+        }}>
+             Ques.{currentIndex} {item.question}</Text>
+
+
+                {renderOptions({ item, index })}
+              </View>
+            );
+          }}
+        />
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          position: 'absolute',
+          bottom: 50,
+          width: '100%',
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            backgroundColor: currentIndex > 1 ? 'purple' : 'gray',
+            height: 50,
+            width: 100,
+            borderRadius: 10,
+            marginLeft: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            if (currentIndex > 1) {
+              listRef.current.scrollToIndex({
+                animated: true,
+                index: parseInt(currentIndex) - 2,
+              });
+            }
+          }}
+        >
+          <Text style={{ color: '#fff' }}>Previous</Text>
+        </TouchableOpacity>
+{currentIndex >= 2 ?
+ <TouchableOpacity
+ style={{
+    backgroundColor: 'green',
+    height: 50,
+    width: 100,
+    borderRadius: 10,
+  marginRight: 20,
+    justifyContent: 'center',
+alignItems: 'center',
+  }}
+  onPress={() => {
+    setModalVisible(true);
 }}
 >
-
-
-    {/* ProgressBar */}
-    {/* { renderProgressBar() } */}
-
-    {/* Question */}
-    {renderQuestion()}
-
-    {/* Options */}
-    {renderOptions()}
-
-    {/* Next Button */}
-    {renderNextButton()}
-    </ScrollView>
-
-    {/* Score Modal */}
-    <Modal
-    animationType="slide"
-    transparent={true}
-    visible={showScoreModal}
-    >
-        <View style={{
-            flex: 1,
-            backgroundColor: COLORS.primary,
-            alignItems: 'center',
-            justifyContent: 'center'
-        }}>
-            <View style={{
-                backgroundColor: COLORS.white,
-                width: '90%',
-                borderRadius: 20,
-                padding: 20,
-                alignItems: 'center'
-            }}>
-                <Text style={{fontSize: 30, fontWeight: 'bold'}}>{ score> (allQuestions.length/2) ? 'Congratulations!' : 'Oops!' }</Text>
-
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    marginVertical: 20
-                }}>
-                    <Text style={{
-                        fontSize: 30,
-                        color: score> (allQuestions.length/2) ? COLORS.success : COLORS.error
-                    }}>{score}</Text>
-                     <Text style={{
-                         fontSize: 20, color: COLORS.black
-                     }}>/ { allQuestions.length }</Text>
-                </View>
-                {/* Retry Quiz button */}
-                <TouchableOpacity
-                onPress={restartQuiz}
-                style={{
-                    backgroundColor: COLORS.accent,
-                    padding: 20, width: '100%', borderRadius: 20
-                }}>
-                    <Text style={{
-                        textAlign: 'center', color: COLORS.white, fontSize: 20
-                    }}>Retry Quiz</Text>
-                </TouchableOpacity>
-
-            </View>
-
-        </View>
-    </Modal>
-
-
-
-
-</View>
-     )}
-    
- </SafeAreaView>
-)
+ <Text style={{ color: '#fff' }}>Submit</Text>
+</TouchableOpacity> : null
 }
+          
+        
+        {lastIndex == currentIndex ? ( null
+    
+        ) : (
+          <TouchableOpacity
+            style={{
+              backgroundColor: 'purple',
+              height: 50,
+              width: 100,
+              borderRadius: 10,
+              marginRight: 20,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              if (allQuestions[currentIndex - 1].marked !== -1) {
+                if (currentIndex < allQuestions.length) {
+                  listRef.current.scrollToIndex({
+                    animated: true,
+                    index: currentIndex,
+                  });
+                }
+              }
+            }}
+          >
+            <Text style={{ color: '#fff' }}>Next</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0,.5)',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <View style={{ backgroundColor: '#fff', width: '90%', borderRadius: 10 }}>
+            <Text style={{ fontSize: 30, fontWeight: '800', alignSelf: 'center', marginTop: 20 }}>Text Score</Text>
+            <Text
+              style={{
+                fontSize: 40,
+                fontWeight: '800',
+                alignSelf: 'center',
+                marginTop: 20,
+                color: 'green',
+              }}
+            >
+              {getTextScore()}
+            </Text>
+            <TouchableOpacity
+              style={{
+                alignSelf: 'center',
+                height: 40,
+                padding: 10,
+                borderWidth: 1,
+                borderRadius: 10,
+                marginTop: 20,
+                marginBottom: 20,
+              }}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <Text>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </View>
+  );
+};
 
-export default Home
+export default Home;

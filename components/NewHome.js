@@ -92,7 +92,9 @@ const NewHome = ({ navigation }) => {
   `
 			)
 			.then((res) => {
-				setDatasFeatured(res);
+				const splittedData = res.slice(0, 1);
+				setDatasFeatured(splittedData);
+				// console.log(res)
 				
 			});
 	}, []);
@@ -173,39 +175,33 @@ const NewHome = ({ navigation }) => {
 						color: "black",
 					}}
 				>
-					Current Affair Quiz
+					Quote of The Day
 				</Text>
 
-				<TouchableOpacity onPress={() => navigation.navigate("FeaturedFornt")}>
-					<MaterialCommunityIcons
-						name="chevron-small-right"
-						style={{
-							color: "black",
-							fontSize: 35,
-						}}
-					/>
-				</TouchableOpacity>
+				
 			</View>
-
+ <View style={{
+	justifyContent:"center",
+	alignItems:"center",
+	display:"flex",
+	width:SIZES.width-10,
+	marginBottom:35
+  }}>
 			<FlatList
 				data={DatasFeatured}
+				scrollEnabled={false}
 				renderItem={(h) => {
 					return (
-						<Pressable
-							onPress={() =>
-								navigation.navigate("FetauredQuizes", { data: h.item.title })
-							}
-						>
+						
 							<View
 								style={{
-									width: ITEM_SIZE,
+									width: SIZES.width,
 									marginHorizontal: 10,
 									borderRadius: 10,
 									justifyContent: "center",
 									alignItems: "center",
-									position:"relative",
+									// position:"relative",
 									
-									height: 180,
 								}}
 							>
 								<Image
@@ -213,39 +209,25 @@ const NewHome = ({ navigation }) => {
 										uri: `${h.item.imageUrl}`,
 									}}
 									style={{
-										height: "100%",
-										width: "100%",
+										// height: "100%",
+										// width: SIZES.width-20,
+										width:"100%",
 										borderRadius: 10,
+										aspectRatio:4/5
 									}}
+									resizeMode="cover"
 								/>
-								<View
-								style={{
-									...StyleSheet.absoluteFillObject,
-									alignItems: 'center',
-									justifyContent: 'center',
-									
-								}}
-								>
-		<Text
-								style={{
 								
-									
-									
-									fontFamily: "Nunito_800ExtraBold",
-									color:"white",
-									fontSize:20
-								
-								}}
-								>{h.item.title}</Text>
-								</View>
 						
 							</View>
-						</Pressable>
+					
 					);
 				}}
 				horizontal
 				showsHorizontalScrollIndicator={false}
 			/>
+
+  </View>
 </View>
 <View style={{ flex: 2  }} >
 <View
