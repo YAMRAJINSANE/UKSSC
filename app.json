@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "SSC Lucent Genius",
-    "slug": "gg",
+    "slug": "ukssc",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,21 +22,20 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.akashjnv007.gg",
-      "versionCode":1
-
+      "package": "com.ukssc.gg",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "e9fce44d-f0f0-4d83-8c82-fdd5bcc6f654"
+        "projectId": "f7346bc8-105f-45e9-b57e-84339dab1b9b"
       }
-    }
+    },
+    "owner": "ritikap"
   },
   "react-native-google-mobile-ads": {
     "android_app_id": "ca-app-pub-8098715833653221~7426637602"
-  
   }
 }
