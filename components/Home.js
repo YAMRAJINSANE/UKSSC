@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Dimensions, Animated, Modal } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Dimensions, Animated, Modal, Alert,Button, Pressable } from 'react-native';
 import { SIZES } from './Constant';
 import client from './QuestionItem';
 import QuesScreen from '../Helper/QuesScreen';
@@ -10,27 +10,23 @@ import {
 } from "@expo-google-fonts/nunito";
 const { height, width } = Dimensions.get('window');
 
-const Home = ({ route }) => {
+const Home = ({ route,navigation }) => {
   const { data } = route.params;
 
   let [FontLoaded] = useFonts({
 		Nunito_600SemiBold,
 		Nunito_800ExtraBold,
 	});
-  // const [currentIndex, setCurrentIndex] = useState(1);
+
+
   const [questions, setQuestions] = useState([]);
-  // const listRef = useRef(null);
-  // const [modalVisible, setModalVisible] = useState(false);
   const [datax, setData] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(true);
   const [quesFetched, setQuesFetched] = useState([]);
   const [lastIndex, setlastIndex] = useState([]);
-
-
-
-  console.log("Currnet Index",currentIndex)
-  console.log("last Index",lastIndex)
-
+  const [isTimerOver, setIsTimerOver] = useState(false);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const [result,SetResult] = useState(0)
   useEffect(() => {
     client
       .fetch(`
@@ -53,8 +49,62 @@ const Home = ({ route }) => {
       });
   }, []);
 
+useEffect(() => {
+  console.log(userAnswers)
+}, [userAnswers])
+
+
+
+
+const SOLUTION = (option, index) => {
+  const question = allQuestions[index - 1];
+  const answer = {
+    index: index,
+    question: question.question,
+    options: question.options,
+    selectedOption: option,
+    correctOption: question.correct
+  };
+
+  const existingAnswerIndex = userAnswers.findIndex(ans => ans.index === index);
+  if (existingAnswerIndex !== -1) {
+    const updatedAnswers = userAnswers.map((ans, idx) =>
+      idx === existingAnswerIndex ? answer : ans
+    );
+    setUserAnswers(updatedAnswers);
+  } else {
+    setUserAnswers(prevAnswers => [...prevAnswers, answer]);
+  }
+};
+
+
+// console.log(result)
+
   const allQuestions = quesFetched;
 
+  const [timer, setTimer] = useState(1 * 60); // 1 hour in seconds
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer((prevTimer) => {
+        if (prevTimer <= 0) {
+          clearInterval(interval);
+          setIsTimerOver(true);
+          return 0;
+        } else {
+          return prevTimer - 1;
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [handleReset]);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  };
 
 
   const [currentIndex, setCurrentIndex] = useState(1);
@@ -69,17 +119,34 @@ const Home = ({ route }) => {
     setSelectedOptions(updatedOptions);
   };
 
-  const calculateScore = () => {
-    let score = 0;
-    allQuestions.forEach((question, index) => {
+const calculateScore = () => {
+  let score = 0;
+  let answeredQuestions = 0; // Track the number of questions answered
+
+  allQuestions.forEach((question, index) => {
+    if (selectedOptions[index] !== undefined) {
+      answeredQuestions++;
       if (question.correct === selectedOptions[index]) {
-        score += 2;
+        score += 4;
       } else {
-        score -= 0.25;
+        score -= 1;
       }
-    });
-    return score.toFixed(2);
-  };
+    }
+  });
+
+  // If no questions were answered, reset the score to 0
+  if (answeredQuestions === 0) {
+    score = 0;
+    return 0;
+  }
+
+
+  // score(score);-
+  return score;
+};
+  
+
+useEffect(()=>{
 
   const getTextScore = () => {
     const score = calculateScore();
@@ -89,6 +156,45 @@ const Home = ({ route }) => {
       return score;
     }
   };
+
+  SetResult(getTextScore)
+},[calculateScore])
+
+const handleReset = () => {
+  Alert.alert(
+    'Confirmation',
+    'Are you sure you want to reset?',
+    [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'Reset',
+        onPress: () => {
+          setSelectedOptions(Array(allQuestions.length).fill(''));
+          setCurrentIndex(1);
+          setModalVisible(false);
+          setIsTimerOver(false);
+          setTimer(60 * 60);
+          SetResult(0);
+          setUserAnswers([]);
+          listRef.current.scrollToIndex({
+            animated: true,
+            index: 0, // Scroll to the first question
+          });
+        },
+      },
+    ],
+    { cancelable: false }
+  );
+};
+
+useEffect(() => {
+  if (isTimerOver) {
+    setModalVisible(true); // Trigger submission when timer ends
+  }
+}, [isTimerOver]);
 
   const renderOptions = ({ item, index }) => {
     return item.options.map((option) => (
@@ -109,7 +215,10 @@ const Home = ({ route }) => {
           // borderWidth:2,
           // borderColor:"gray"
         }}
-        onPress={() => onSelectOption(index, option)}
+      onPress={() => {onSelectOption(index, option)
+      SOLUTION(option,currentIndex)
+      
+      }}
       >
         <Text
         style={{
@@ -139,23 +248,18 @@ const Home = ({ route }) => {
   return (
     <View style={{ flex: 1 }}>
       {/* Upper Section */}
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 ,width:SIZES.width}}>
         <View style={{ justifyContent: 'space-between', width: width, marginHorizontal: 10 }}>
-          <Text style={{ fontSize: 20, fontWeight: '600', marginLeft: 20, color: '#000' }}>
+          <Text style={{ fontSize: 15, fontWeight: '600', marginLeft: 20, color: '#000' }}>
             {data}: {currentIndex}/{allQuestions.length}
           </Text>
+        <Text>{formatTime(timer)}</Text>
         </View>
-        <Text
-          style={{ marginRight: 20, fontSize: 20, fontWeight: '600', color: 'black' }}
-          onPress={() => {
-            reset();
-            listRef.current.scrollToIndex({ animated: true, index: 0 });
-          }}
-        >
-          Reset
-        </Text>
+        
       </View>
-
+<Pressable onPress={handleReset}>
+  <Text>RSEST</Text>
+</Pressable>
       <View style={{ marginTop: 30 }}>
         <FlatList
           ref={listRef}
@@ -291,10 +395,10 @@ alignItems: 'center',
                 fontWeight: '800',
                 alignSelf: 'center',
                 marginTop: 20,
-                color: 'green',
+                color: result >= 0 ? "green":"red"
               }}
             >
-              {getTextScore()}
+              {result}
             </Text>
             <TouchableOpacity
               style={{
@@ -308,9 +412,26 @@ alignItems: 'center',
               }}
               onPress={() => {
                 setModalVisible(!modalVisible);
+                handleReset()
               }}
             >
               <Text>Close</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                alignSelf: 'center',
+                height: 40,
+                padding: 10,
+                borderWidth: 1,
+                borderRadius: 10,
+                marginTop: 20,
+                marginBottom: 20,
+              }}
+              onPress={() => {
+                navigation.navigate('ResultScreen', { userAnswers: userAnswers });
+              }}
+            >
+              <Text>SOLUTION</Text>
             </TouchableOpacity>
           </View>
         </View>

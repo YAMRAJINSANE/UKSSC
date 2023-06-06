@@ -19,6 +19,7 @@ import {
 import FeaturedFornt from "../components/FeaturedFornt";
 import FetauredQuizes from "../components/FetauredQuizes";
 import SubCat from "../components/SubCat";
+import ResultScreen from "../components/ResultScreen";
 
 const Stack = createStackNavigator();
 
@@ -202,6 +203,23 @@ function MyStack() {
 					headerTitleAlign: "center",
 				}}
 				component={SubCat}
+			/>
+			<Stack.Screen
+				name="ResultScreen"
+				options={{
+					title: "SSC Lucent Genius",
+					headerStyle: {
+						backgroundColor: "#471598",
+						elevation: 5,
+						shadowOpacity: 0.5,
+					},
+					headerTintColor: "#fff",
+					headerTitleStyle: {
+						fontWeight: "bold",
+					},
+					headerTitleAlign: "center",
+				}}
+				component={ResultScreen}
 			/>
 		</Stack.Navigator>
 	);
