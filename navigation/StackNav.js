@@ -20,6 +20,7 @@ import FeaturedFornt from "../components/FeaturedFornt";
 import FetauredQuizes from "../components/FetauredQuizes";
 import SubCat from "../components/SubCat";
 import ResultScreen from "../components/ResultScreen";
+import { COLORS } from "../components/Constant";
 
 const Stack = createStackNavigator();
 
@@ -105,7 +106,6 @@ function MyStack() {
 							name="youtube"
 							size={33}
 							color="#fff"
-							style={{ marginRight: 10 }}
 							onPress={() => {
 								
 									Linking.openURL("https://www.youtube.com/@SSCLucentGenius");
@@ -119,19 +119,36 @@ function MyStack() {
 			/>
 
 			<Stack.Screen
-				options={{
-					title: "SSC Lucent Genius",
-					headerStyle: {
-						backgroundColor: "#471598",
-						elevation: 5,
-						shadowOpacity: 0.5,
-					},
-					headerTintColor: "#fff",
-					headerTitleStyle: {
-						fontWeight: "bold",
-					},
-					headerTitleAlign: "center",
-				}}
+
+      options={({ route }) => ({ title: route.params.data,
+	headerStyle: {
+		backgroundColor: COLORS.primary,
+		elevation: 5,
+		shadowOpacity: 0.5,
+	},
+	headerTintColor: "#fff",
+	headerTitleStyle: { 
+		fontWeight:"bold"
+
+	}
+
+   
+})}
+
+
+				// options={{
+				// 	title: "SSC Lucent Genius",
+				// 	headerStyle: {
+				// 		backgroundColor: "#471598",
+				// 		elevation: 5,
+				// 		shadowOpacity: 0.5,
+				// 	},
+				// 	headerTintColor: "#fff",
+				// 	headerTitleStyle: {
+				// 		fontWeight: "bold",
+				// 	},
+				// 	headerTitleAlign: "center",
+				// }}
 				name="Front"
 				component={Home}
 			/>
@@ -207,7 +224,7 @@ function MyStack() {
 			<Stack.Screen
 				name="ResultScreen"
 				options={{
-					title: "SSC Lucent Genius",
+					title: "Test Analysis",
 					headerStyle: {
 						backgroundColor: "#471598",
 						elevation: 5,
@@ -217,7 +234,7 @@ function MyStack() {
 					headerTitleStyle: {
 						fontWeight: "bold",
 					},
-					headerTitleAlign: "center",
+					// headerTitleAlign: "center",
 				}}
 				component={ResultScreen}
 			/>
